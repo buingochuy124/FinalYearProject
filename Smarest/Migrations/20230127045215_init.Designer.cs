@@ -10,7 +10,7 @@ using Smarest.Data;
 namespace Smarest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230126172814_init")]
+    [Migration("20230127045215_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,10 @@ namespace Smarest.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -46,6 +50,8 @@ namespace Smarest.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -82,6 +88,10 @@ namespace Smarest.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -135,6 +145,8 @@ namespace Smarest.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -262,43 +274,29 @@ namespace Smarest.Migrations
 
             modelBuilder.Entity("Smarest.Model.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
+                    b.HasDiscriminator().HasValue("Role");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            ConcurrencyStamp = "7a72f9ca-4ab3-4d1d-8a2c-b89ead8426ce",
+                            Id = "fa6c79f1-3f5c-42bb-8c12-1f28507e1ec2",
+                            ConcurrencyStamp = "56554b0e-ae9b-4922-a41a-cfc795aa7612",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2,
-                            ConcurrencyStamp = "4970b805-bc5d-40b0-8f16-0b19ecade21b",
+                            Id = "b0eba36e-a291-4cdf-8ceb-87f5f47f06b0",
+                            ConcurrencyStamp = "a4e5df0d-17f7-4766-a837-722d3124dc56",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = 3,
-                            ConcurrencyStamp = "ae56c40e-b66b-4bbe-ad2b-38a97270a753",
+                            Id = "90f6ab9d-cd7f-4003-83ee-7efdd6e3ad04",
+                            ConcurrencyStamp = "744ffef8-bf90-4c76-a01a-40d94da839d0",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -306,13 +304,7 @@ namespace Smarest.Migrations
 
             modelBuilder.Entity("Smarest.Model.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -322,12 +314,7 @@ namespace Smarest.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

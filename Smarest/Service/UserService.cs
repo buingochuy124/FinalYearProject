@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Smarest.Model;
+using Smarest.Service;
 using Smarest.Service.IService;
 using Smarest.ViewModel;
 using System;
@@ -18,7 +20,7 @@ namespace Smarest.Services
         private UserManager<IdentityUser> _userManger;
         private IConfiguration _configuration;
         private IMailService _mailService; 
-        public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
+        public UserService( UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
         {
             _userManger = userManager;
             _configuration = configuration;
@@ -42,7 +44,6 @@ namespace Smarest.Services
                 Email = model.Email,
                 UserName = model.Email,
             };
-
             var result = await _userManger.CreateAsync(identityUser, model.Password);
 
 

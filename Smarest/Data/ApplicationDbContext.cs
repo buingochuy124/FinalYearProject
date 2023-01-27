@@ -13,7 +13,7 @@ namespace Smarest.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            
+
         }
         public DbSet<Item> Items { get; set; }
 
@@ -21,23 +21,27 @@ namespace Smarest.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Role> Role { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             //xoa chu trong db neu can
-            //foreach (var entityType in builder.Model.GetEntityTypes())
-            //{
-            //    var tableName = entityType.GetTableName();
-            //    if (tableName.StartsWith("AspNet"))
-            //    {
-            //        entityType.SetTableName(tableName.Substring(6));
-            //    }
-            //}
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
 
             SeedRolesToDb.Seed(builder);
         }
+
+
 
     }
 }

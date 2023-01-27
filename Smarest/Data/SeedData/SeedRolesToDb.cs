@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Smarest.Model;
+using System;
 
 namespace Smarest.Data.SeedData
 {
@@ -14,19 +15,19 @@ namespace Smarest.Data.SeedData
             builder.Entity<Role>().HasData(
                 new Role()
                 {
-                    Id = 1,
+                    Id = Guid.NewGuid().ToString(),
                     Name = UserRoles.RoleConstant.Admin,
                     NormalizedName = UserRoles.RoleConstant.Admin.ToUpper()
                 },
                 new Role()
                 {
-                    Id=2,
+                    Id = Guid.NewGuid().ToString(),
                     Name = UserRoles.RoleConstant.Manager,
                     NormalizedName = UserRoles.RoleConstant.Manager.ToUpper()
                 },
                 new Role()
                 {
-                    Id=3,
+                    Id = Guid.NewGuid().ToString(),
                     Name = UserRoles.RoleConstant.Guest,
                     NormalizedName = UserRoles.RoleConstant.Guest.ToUpper()
                 });

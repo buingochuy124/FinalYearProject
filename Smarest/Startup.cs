@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using Smarest.Data;
 using Smarest.Repository;
 using Smarest.Repository.IRepository;
+using Smarest.Service;
 using Smarest.Service.IService;
 using Smarest.Services;
 using System;
@@ -94,6 +95,7 @@ namespace Smarest
             services.AddScoped<IUserService, UserService>();
             services.AddTransient<IMailService, SendGridMailService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IAddUserToRoleService, AddUserToRoleService>();
 
 
             services.AddRazorPages();

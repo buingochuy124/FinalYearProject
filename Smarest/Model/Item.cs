@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Smarest.Model
@@ -16,5 +17,13 @@ namespace Smarest.Model
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-    }
+
+
+        [NotMapped]
+        public List<OrderDetail> OrderDetail { get; set; }
+        [NotMapped]
+        public List<Cart> Carts { get; set; }
+        [NotMapped]
+        public Category Categories { get; set; }
+    } 
 }

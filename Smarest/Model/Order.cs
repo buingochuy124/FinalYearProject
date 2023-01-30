@@ -6,7 +6,7 @@ namespace Smarest.Model
 {
     public class Order
     {
-         public int Id {get;set;}
+         public string Id {get;set;}
 
          [ForeignKey("User")]
          public string UserId {get;set;}

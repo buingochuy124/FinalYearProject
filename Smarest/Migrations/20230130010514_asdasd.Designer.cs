@@ -10,8 +10,8 @@ using Smarest.Data;
 namespace Smarest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230127045215_init")]
-    partial class init
+    [Migration("20230130010514_asdasd")]
+    partial class asdasd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,7 +49,7 @@ namespace Smarest.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("Roles");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
@@ -75,7 +75,7 @@ namespace Smarest.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -144,7 +144,7 @@ namespace Smarest.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("Users");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
@@ -170,7 +170,7 @@ namespace Smarest.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -192,7 +192,7 @@ namespace Smarest.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("UserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -207,7 +207,24 @@ namespace Smarest.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "201",
+                            RoleId = "100"
+                        },
+                        new
+                        {
+                            UserId = "202",
+                            RoleId = "101"
+                        },
+                        new
+                        {
+                            UserId = "203",
+                            RoleId = "102"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -226,15 +243,41 @@ namespace Smarest.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("Smarest.Model.Cart", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ItemQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TableId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("TableId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Smarest.Model.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -243,20 +286,35 @@ namespace Smarest.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "101",
+                            Name = "Food"
+                        },
+                        new
+                        {
+                            Id = "102",
+                            Name = "Drink"
+                        },
+                        new
+                        {
+                            Id = "103",
+                            Name = "Other"
+                        });
                 });
 
             modelBuilder.Entity("Smarest.Model.Item", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<float>("Cost")
-                        .HasColumnType("real");
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -272,6 +330,79 @@ namespace Smarest.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("Smarest.Model.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Smarest.Model.OrderDetail", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Smarest.Model.Table", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tables");
+                });
+
+            modelBuilder.Entity("Smarest.Model.Voucher", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vouchers");
+                });
+
             modelBuilder.Entity("Smarest.Model.Role", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
@@ -281,22 +412,22 @@ namespace Smarest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fa6c79f1-3f5c-42bb-8c12-1f28507e1ec2",
-                            ConcurrencyStamp = "56554b0e-ae9b-4922-a41a-cfc795aa7612",
+                            Id = "100",
+                            ConcurrencyStamp = "f682b58e-87c1-4a16-8494-36ff1ce2b207",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b0eba36e-a291-4cdf-8ceb-87f5f47f06b0",
-                            ConcurrencyStamp = "a4e5df0d-17f7-4766-a837-722d3124dc56",
+                            Id = "101",
+                            ConcurrencyStamp = "23d97792-ef8a-4ace-943a-1f818a0d13bb",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "90f6ab9d-cd7f-4003-83ee-7efdd6e3ad04",
-                            ConcurrencyStamp = "744ffef8-bf90-4c76-a01a-40d94da839d0",
+                            Id = "102",
+                            ConcurrencyStamp = "2392f7bf-b1aa-4631-a6b2-7060d5470f38",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -315,6 +446,62 @@ namespace Smarest.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "201",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1ac64e8a-d9a3-4a98-808a-3cd21949b592",
+                            Email = "Admin201@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN201@GMAIL.COM",
+                            NormalizedUserName = "ADMIN201@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN6118eADqCvBwqBWo468odSgmAxvWbSus+YzMJKwYcxdNm57IX5uwm5p9xFWcXaCw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fc742924-1566-4574-a0ac-2e69557a9dbc",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin201@gmail.com",
+                            FirstName = "Ngoc Huy",
+                            LastName = "Bui"
+                        },
+                        new
+                        {
+                            Id = "202",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4fa3665f-8313-4a4b-8b36-0db928445275",
+                            Email = "Manager202@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MANAGER202@GMAIL.COM",
+                            NormalizedUserName = "MANAGER202@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAECy4jAgEJBib/SF9HKSG3uCPWOwbB9yjvkimGDnCGDm/w4tkHeYV4PkzbZDUKyPjdA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "02eba6f9-a706-4888-99b9-4ea774ec1225",
+                            TwoFactorEnabled = false,
+                            UserName = "Manager202@gmail.com",
+                            FirstName = "Thanh Binh",
+                            LastName = "Phan"
+                        },
+                        new
+                        {
+                            Id = "203",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "cc830ddc-eb87-403d-86dd-b3b315f24829",
+                            Email = "Guest203@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "GUEST203@GMAIL.COM",
+                            NormalizedUserName = "GUEST203@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJOL69eOmvjy6tTOOoEXI5OqKacC8RhqmX8YGok7XZIPbKQsR6MN7uVE3u66oXee4g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "bebd301a-d860-4059-a055-802ad9cff9dc",
+                            TwoFactorEnabled = false,
+                            UserName = "Guest203@gmail.com",
+                            FirstName = "Hoai Anh",
+                            LastName = "Bui Ngoc"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -368,13 +555,44 @@ namespace Smarest.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Smarest.Model.Cart", b =>
+                {
+                    b.HasOne("Smarest.Model.Item", "Items")
+                        .WithMany()
+                        .HasForeignKey("ItemId");
+
+                    b.HasOne("Smarest.Model.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId");
+
+                    b.HasOne("Smarest.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Smarest.Model.Item", b =>
                 {
                     b.HasOne("Smarest.Model.Category", "Category")
-                        .WithMany("Items")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("Smarest.Model.Order", b =>
+                {
+                    b.HasOne("Smarest.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Smarest.Model.OrderDetail", b =>
+                {
+                    b.HasOne("Smarest.Model.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId");
+
+                    b.HasOne("Smarest.Model.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,7 +31,7 @@ namespace Smarest.Data
         {
             base.OnModelCreating(builder);
 
-            //xoa chu trong db neu can
+            //xoa chu asp trong dbo name neu can
             foreach (var entityType in builder.Model.GetEntityTypes())
             {
                 var tableName = entityType.GetTableName();

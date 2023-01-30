@@ -7,9 +7,9 @@ namespace Smarest.Repository.IRepository
     public interface ICategoryRepository
     {
         List<Category> GetCategory();
-        Category GetCategory(int Id);
+        Category GetCategory(string Id);
         bool Create(Category category);
-        bool Delete(int id);
-        bool Edit(int id, Category category);
+        bool Delete(string id);
+        bool Edit(string id, Category category);
     }
 }

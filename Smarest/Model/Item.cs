@@ -7,15 +7,15 @@ namespace Smarest.Model
     public class Item
     {
         [Key]
-        public int Id {get;set;}
+        public string Id {get;set;}
         [Required]
         public string Name {get;set;}
         [Required]
-        public float Cost {get;set;}
+        public double Cost {get;set;}
         public string ImageUrl { get; set; }
 
         [ForeignKey("Category")]
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
         public Category Category { get; set; }
 
 

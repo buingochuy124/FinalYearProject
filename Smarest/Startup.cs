@@ -82,15 +82,7 @@ namespace Smarest
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-
-                options.AddPolicy("RequireManagerRole", policy => policy.RequireRole("Admin", "Manager"));
-
-                options.AddPolicy("RequireGuestRole", policy => policy.RequireRole("Admin", "Manager", "Guest"));
-
-            });
+           
 
             services.AddScoped<IUserService, UserService>();
             services.AddTransient<IMailService, SendGridMailService>();

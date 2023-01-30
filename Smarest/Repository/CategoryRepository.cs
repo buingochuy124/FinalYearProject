@@ -35,12 +35,12 @@ namespace Smarest.Repository
             }
         }
 
-        public bool Delete(int id)
+        public bool Delete(string id)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Edit(int id, Category category)
+        public bool Edit(string id, Category category)
         {
             throw new System.NotImplementedException();
         }
@@ -51,7 +51,7 @@ namespace Smarest.Repository
             return categories;
         }
 
-        public Category GetCategory(int Id)
+        public Category GetCategory(string Id)
         {
             var category =  _context.Categories.SingleOrDefault(c => c.Id == Id);
             return category;

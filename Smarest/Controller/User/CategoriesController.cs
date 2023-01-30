@@ -17,7 +17,7 @@ namespace Smarest.Controller.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
     public class CategoriesController : ControllerBase
     {
         private ICategoryRepository _categoryRepos;

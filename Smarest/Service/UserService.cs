@@ -7,6 +7,7 @@ using Smarest.Service;
 using Smarest.Service.IService;
 using Smarest.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -19,9 +20,11 @@ namespace Smarest.Services
     {
         private UserManager<IdentityUser> _userManger;
         private IConfiguration _configuration;
-        private IMailService _mailService; 
-        public UserService( UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
+        private IMailService _mailService;
+        private RoleManager<IdentityRole> _roleManager;
+        public UserService(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
         {
+            _roleManager = roleManager;
             _userManger = userManager;
             _configuration = configuration;
             _mailService = mailService; 
@@ -98,12 +101,28 @@ namespace Smarest.Services
                     IsSuccess = false,
                 };
 
-            var claims = new[]
+            var claims = new List<Claim>           
             {
                 new Claim("Email", model.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
+            var userClaims = await _userManger.GetClaimsAsync(user);
+            var userRoles = await _userManger.GetRolesAsync(user);
+            claims.AddRange(userClaims);
 
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
 
             var token = new JwtSecurityToken(

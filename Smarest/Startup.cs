@@ -73,7 +73,15 @@ namespace Smarest
                 };
             });
 
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole("Admin");
+                });
+            });
 
 
             services.AddControllersWithViews();
@@ -93,20 +101,10 @@ namespace Smarest
             services.AddRazorPages();
         }
 
-        //test
 
-        //private static void SeedUsers(ModelBuilder builder)
-        //{
-        //    builder.Entity<IdentityUserRole<int>>().HasData(
-        //        new IdentityUserRole<int>
-        //        {
-        //            UserId = 1,
-        //            RoleId = 1,
-        //        }
-        //        );
-        //}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

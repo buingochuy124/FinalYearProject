@@ -2,6 +2,7 @@
 using Smarest.Data;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
+using Smarest.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Smarest.Repository
             _context = context;
         }
 
-        public bool Create(Category category)
+        public async Task<UserManagerResponse> Create(Category category)
         {
             try
             {
@@ -25,36 +26,43 @@ namespace Smarest.Repository
                 {
                     Name = category.Name,
                 };
-                _context.Categories.Add(newCategory);
+                var createCategory = await _context.Categories.AddAsync(newCategory);
                 _context.SaveChanges();
-                return true;
+                return new UserManagerResponse
+                {
+                    Message = "Category Created",
+                    IsSuccess = true,
+                };
             }
             catch (System.Exception)
             {
-                return false;
+                return new UserManagerResponse
+                {
+
+                };
             }
         }
 
-        public bool Delete(string id)
+
+        public async Task<List<Category>> GetCategory()
         {
-            throw new System.NotImplementedException();
+            return await _context.Categories.ToListAsync();
         }
 
-        public bool Edit(string id, Category category)
+        public async Task<Category> GetCategory(string Id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public List<Category> GetCategory()
-        {
-            var categories = _context.Categories.ToList();
-            return categories;
-        }
-
-        public Category GetCategory(string Id)
-        {
-            var category =  _context.Categories.SingleOrDefault(c => c.Id == Id);
+            var category =  await _context.Categories.SingleOrDefaultAsync(c => c.Id == Id);
             return category;
+        }
+
+        public async Task<UserManagerResponse> Delete(string id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<UserManagerResponse> Edit(string id, Category category)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

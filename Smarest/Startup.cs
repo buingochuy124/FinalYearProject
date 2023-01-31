@@ -95,7 +95,7 @@ namespace Smarest
             services.AddScoped<IUserService, UserService>();
             services.AddTransient<IMailService, SendGridMailService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IAddUserToRoleService, AddUserToRoleService>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
 
             services.AddRazorPages();

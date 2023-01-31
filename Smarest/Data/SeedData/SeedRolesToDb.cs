@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Smarest.Model;
 using System;
+using System.Xml.Linq;
 
 namespace Smarest.Data.SeedData
 {
@@ -13,6 +14,7 @@ namespace Smarest.Data.SeedData
             SeedUsers(builder);
             SeedUserRoles(builder);
             SeedCategories(builder);
+            SeedItem(builder);
         }
         public static void SeedRoles(ModelBuilder builder)
         {
@@ -20,20 +22,20 @@ namespace Smarest.Data.SeedData
                 new Role()
                 {
                     Id = "100",
-                    Name = UserRoles.RoleConstant.Admin,
-                    NormalizedName = UserRoles.RoleConstant.Admin.ToUpper()
+                    Name = Utils.Role.Admin,
+                    NormalizedName = Utils.Role.Admin.ToUpper()
                 },
                 new Role()
                 {
                     Id = "101",
-                    Name = UserRoles.RoleConstant.Manager,
-                    NormalizedName = UserRoles.RoleConstant.Manager.ToUpper()
+                    Name = Utils.Role.Manager,
+                    NormalizedName = Utils.Role.Manager.ToUpper()
                 },
                 new Role()
                 {
                     Id = "102",
-                    Name = UserRoles.RoleConstant.Guest,
-                    NormalizedName = UserRoles.RoleConstant.Guest.ToUpper()
+                    Name = Utils.Role.Guest,
+                    NormalizedName = Utils.Role.Guest.ToUpper()
                 });
         }
         public static void SeedUsers(ModelBuilder builder)
@@ -158,15 +160,15 @@ namespace Smarest.Data.SeedData
                    Cost = 13.5,
                    ImageUrl = "https://www.pepsi.com/en-us/uploads/images/twil-can.png",
                    CategoryId = "102"
+               },
+               new Item()
+               {
+                   Id = Guid.NewGuid().ToString(),
+                   Name = "tissue",
+                   Cost = 10.0,
+                   ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
+                   CategoryId = "103"
                });
-              //new Item()
-              //{
-              //    Id = Guid.NewGuid().ToString(),
-              //    Name = "Pepsi",
-              //    Cost = 13.5,
-              //    ImageUrl = "https://www.pepsi.com/en-us/uploads/images/twil-can.png",
-              //    CategoryId = "102"
-              //});
 
         }
       

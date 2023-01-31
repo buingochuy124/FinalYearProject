@@ -47,8 +47,9 @@ namespace Smarest.Services
                 Email = model.Email,
                 UserName = model.Email,
             };
-            var result = await _userManger.CreateAsync(identityUser, model.Password);
 
+            var result = await _userManger.CreateAsync(identityUser, model.Password);
+            //var addUserToGuestRole = 
 
             if (result.Succeeded)
             {

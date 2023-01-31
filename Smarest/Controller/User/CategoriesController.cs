@@ -9,15 +9,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smarest.Data;
-using Smarest.Data.UserRoles;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
+using Smarest.ViewModel;
 
 namespace Smarest.Controller.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
     public class CategoriesController : ControllerBase
     {
         private ICategoryRepository _categoryRepos;
@@ -28,9 +27,9 @@ namespace Smarest.Controller.User
         }
 
         [HttpGet]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var categories = _categoryRepos.GetCategory();
+            List<Category> categories = await _categoryRepos.GetCategory();
             if (categories == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent);
@@ -41,9 +40,9 @@ namespace Smarest.Controller.User
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public IActionResult GetCategory(string id)
+        public async Task<IActionResult> GetCategory(string id)
         {
-            var category = _categoryRepos.GetCategory(id);
+            Category category = await _categoryRepos.GetCategory(id);
             if (category == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound);
@@ -53,27 +52,28 @@ namespace Smarest.Controller.User
         // POST: api/Categories/create
 
         [HttpPost("create")]
-        public IActionResult CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory(Category category)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var result = _categoryRepos.Create(category);
-            return result ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
+            UserManagerResponse result = await _categoryRepos.Create(category);
+            return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
+           
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var result = _categoryRepos.Delete(id);
-            return result ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
+            UserManagerResponse result = await _categoryRepos.Delete(id);
+            return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
 
         }
         [HttpPut("edit/{id}")]
-        public IActionResult Edit(string id, Category category)
+        public async Task<IActionResult> Edit(string id, Category category)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var result = _categoryRepos.Edit(id, category);
-            return result ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
+            UserManagerResponse result = await _categoryRepos.Edit(id, category);
+            return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
         }
     }
 }

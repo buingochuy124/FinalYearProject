@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Smarest.Migrations
 {
-    public partial class init : Migration
+    public partial class initandseeddata : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -93,7 +93,7 @@ namespace Smarest.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Cost = table.Column<float>(nullable: false),
+                    Cost = table.Column<double>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
                     CategoryId = table.Column<string>(nullable: true)
                 },
@@ -298,9 +298,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "128bf57e-b614-481a-a3cb-8dac7019a68c", "Food" },
-                    { "65ca7944-a115-4795-9a7d-5e1eef30d401", "Drink" },
-                    { "aa8a4f75-c657-4b53-a1d4-72a6c28f733c", "Other" }
+                    { "101", "Food" },
+                    { "102", "Drink" },
+                    { "103", "Other" }
                 });
 
             migrationBuilder.InsertData(
@@ -308,9 +308,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "ff672733-0c7b-438c-af04-2b3d092785d2", "Role", "Admin", "ADMIN" },
-                    { "101", "c2bac172-b000-4d5c-a632-8ae1ab3e025f", "Role", "Manager", "MANAGER" },
-                    { "102", "5b1b9544-75a0-475b-a326-7a26a644b3d5", "Role", "Guest", "GUEST" }
+                    { "100", "c9cac096-6386-4401-aae6-a1576b6092f7", "Role", "Admin", "ADMIN" },
+                    { "101", "d9457052-60b0-45e3-a6c5-aa95e3beb309", "Role", "Manager", "MANAGER" },
+                    { "102", "a68d4c65-1487-44c8-a29d-1c033ab35b3b", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
@@ -318,25 +318,32 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
                 values: new object[,]
                 {
-                    { "201", 0, "7f845b19-a90e-471f-9604-a44a473dbdae", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEOTsdsZOUNIcpaSQeKF5rV0kXBRFh0lmFH4lxmyQ4SMYaPQWh7YKhvp1FplaXPvCww==", null, false, "772e9668-ca29-48da-9aad-b476db6d0e9e", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
-                    { "202", 0, "61c9805d-d18c-4101-8e1b-b84c409f1073", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAENw8CI6MqNNCIaS15A1T1kNRjgzWTOLir/9HedQkZ2ZhwqHFuYD9KiFLizYOrP8o1w==", null, false, "a7a12254-86a2-4c0b-bec6-679723b2a772", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
-                    { "203", 0, "1bb8206c-8e08-4b26-859f-a8dcc1b8e234", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEJvZimkplrgl0sVoeqt9xrLTwF40R95xelVKhMKbs/84BLWH0AcVXzNjTTxPq54r1w==", null, false, "cf0ee07f-658b-4b9b-add4-b3e75ddfe5bc", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
+                    { "201", 0, "098ff521-21b7-485c-8016-42019abca41d", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEGwnfTS9eqTs84Lwje+ocvLxEanUZPX3UGPt9NyCs9VU3AIaOnkClM/xXL7Z8EVEkA==", null, false, "af4edc2b-9059-4c40-abf0-d458be91d67a", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
+                    { "202", 0, "189df265-018f-4b11-bb49-5a43530aaf80", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEGuKLexxhgP9YVAuQc6d0rEZDQTHZNMUw7bPiywh+DBts+pTtF21dWgudzjU0PyEnw==", null, false, "063ae687-8bd2-4238-81f6-88f552ebc9f7", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
+                    { "203", 0, "5f62b037-49fb-4918-bb19-ec04e22d0f5a", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEIfBLeA87ANnmlAwfCIvlSvPybwgl/fkbx0aeHdzZ8eBetHrTP1WcZ0h9rSukL0BQA==", null, false, "63895aca-db8f-4439-9dbb-d0dfdc75826c", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Items",
+                columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
+                values: new object[,]
+                {
+                    { "572a3a85-da1f-4425-8110-bfc6e583afcf", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "87348eb5-762a-494f-8173-1631bb955954", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "fd21137e-b792-424a-a7a4-6db03c79e22f", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "6b80ba98-6267-4c1d-9d4c-d0f8d38460f5", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "600daa55-e7f9-4fb1-88bc-e686feb57c56", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "201", "100" });
-
-            migrationBuilder.InsertData(
-                table: "UserRoles",
-                columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "202", "101" });
-
-            migrationBuilder.InsertData(
-                table: "UserRoles",
-                columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "203", "102" });
+                values: new object[,]
+                {
+                    { "201", "100" },
+                    { "202", "101" },
+                    { "203", "102" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_ItemId",

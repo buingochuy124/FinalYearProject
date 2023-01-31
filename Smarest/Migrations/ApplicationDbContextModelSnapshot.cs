@@ -326,6 +326,48 @@ namespace Smarest.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Items");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "572a3a85-da1f-4425-8110-bfc6e583afcf",
+                            CategoryId = "101",
+                            Cost = 30.5,
+                            ImageUrl = "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg",
+                            Name = "Fried rice"
+                        },
+                        new
+                        {
+                            Id = "87348eb5-762a-494f-8173-1631bb955954",
+                            CategoryId = "101",
+                            Cost = 30.5,
+                            ImageUrl = "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg",
+                            Name = "Santa Maria Grilled Tri-Tip Beef"
+                        },
+                        new
+                        {
+                            Id = "fd21137e-b792-424a-a7a4-6db03c79e22f",
+                            CategoryId = "102",
+                            Cost = 12.5,
+                            ImageUrl = "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add",
+                            Name = "Coca"
+                        },
+                        new
+                        {
+                            Id = "6b80ba98-6267-4c1d-9d4c-d0f8d38460f5",
+                            CategoryId = "102",
+                            Cost = 13.5,
+                            ImageUrl = "https://www.pepsi.com/en-us/uploads/images/twil-can.png",
+                            Name = "Pepsi"
+                        },
+                        new
+                        {
+                            Id = "600daa55-e7f9-4fb1-88bc-e686feb57c56",
+                            CategoryId = "103",
+                            Cost = 10.0,
+                            ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
+                            Name = "tissue"
+                        });
                 });
 
             modelBuilder.Entity("Smarest.Model.Order", b =>
@@ -411,21 +453,21 @@ namespace Smarest.Migrations
                         new
                         {
                             Id = "100",
-                            ConcurrencyStamp = "f682b58e-87c1-4a16-8494-36ff1ce2b207",
+                            ConcurrencyStamp = "c9cac096-6386-4401-aae6-a1576b6092f7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "101",
-                            ConcurrencyStamp = "23d97792-ef8a-4ace-943a-1f818a0d13bb",
+                            ConcurrencyStamp = "d9457052-60b0-45e3-a6c5-aa95e3beb309",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "102",
-                            ConcurrencyStamp = "2392f7bf-b1aa-4631-a6b2-7060d5470f38",
+                            ConcurrencyStamp = "a68d4c65-1487-44c8-a29d-1c033ab35b3b",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -450,15 +492,15 @@ namespace Smarest.Migrations
                         {
                             Id = "201",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1ac64e8a-d9a3-4a98-808a-3cd21949b592",
+                            ConcurrencyStamp = "098ff521-21b7-485c-8016-42019abca41d",
                             Email = "Admin201@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN201@GMAIL.COM",
                             NormalizedUserName = "ADMIN201@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEN6118eADqCvBwqBWo468odSgmAxvWbSus+YzMJKwYcxdNm57IX5uwm5p9xFWcXaCw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGwnfTS9eqTs84Lwje+ocvLxEanUZPX3UGPt9NyCs9VU3AIaOnkClM/xXL7Z8EVEkA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fc742924-1566-4574-a0ac-2e69557a9dbc",
+                            SecurityStamp = "af4edc2b-9059-4c40-abf0-d458be91d67a",
                             TwoFactorEnabled = false,
                             UserName = "Admin201@gmail.com",
                             FirstName = "Ngoc Huy",
@@ -468,15 +510,15 @@ namespace Smarest.Migrations
                         {
                             Id = "202",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4fa3665f-8313-4a4b-8b36-0db928445275",
+                            ConcurrencyStamp = "189df265-018f-4b11-bb49-5a43530aaf80",
                             Email = "Manager202@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MANAGER202@GMAIL.COM",
                             NormalizedUserName = "MANAGER202@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECy4jAgEJBib/SF9HKSG3uCPWOwbB9yjvkimGDnCGDm/w4tkHeYV4PkzbZDUKyPjdA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGuKLexxhgP9YVAuQc6d0rEZDQTHZNMUw7bPiywh+DBts+pTtF21dWgudzjU0PyEnw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "02eba6f9-a706-4888-99b9-4ea774ec1225",
+                            SecurityStamp = "063ae687-8bd2-4238-81f6-88f552ebc9f7",
                             TwoFactorEnabled = false,
                             UserName = "Manager202@gmail.com",
                             FirstName = "Thanh Binh",
@@ -486,15 +528,15 @@ namespace Smarest.Migrations
                         {
                             Id = "203",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc830ddc-eb87-403d-86dd-b3b315f24829",
+                            ConcurrencyStamp = "5f62b037-49fb-4918-bb19-ec04e22d0f5a",
                             Email = "Guest203@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST203@GMAIL.COM",
                             NormalizedUserName = "GUEST203@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJOL69eOmvjy6tTOOoEXI5OqKacC8RhqmX8YGok7XZIPbKQsR6MN7uVE3u66oXee4g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIfBLeA87ANnmlAwfCIvlSvPybwgl/fkbx0aeHdzZ8eBetHrTP1WcZ0h9rSukL0BQA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bebd301a-d860-4059-a055-802ad9cff9dc",
+                            SecurityStamp = "63895aca-db8f-4439-9dbb-d0dfdc75826c",
                             TwoFactorEnabled = false,
                             UserName = "Guest203@gmail.com",
                             FirstName = "Hoai Anh",

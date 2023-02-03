@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Smarest.Data.SeedData
 {
-    public static class SeedToDb
+    public static class SeedDataToDb
     {
         public static void Seed(ModelBuilder builder)
         {

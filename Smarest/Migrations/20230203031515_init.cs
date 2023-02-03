@@ -308,9 +308,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "da733f02-5d27-4ed5-aa7a-bd2c211f1030", "Role", "Admin", "ADMIN" },
-                    { "101", "8b80c83e-4bda-4dc3-be93-edd71626f3be", "Role", "Manager", "MANAGER" },
-                    { "102", "64bda9fb-b303-4aed-824c-28e2eb2c54a8", "Role", "Guest", "GUEST" }
+                    { "100", "722a06df-759c-4f0e-9079-0052ed811dd9", "Role", "Admin", "ADMIN" },
+                    { "101", "d36a580f-8325-4df4-985a-22b8901b6828", "Role", "Manager", "MANAGER" },
+                    { "102", "893499e3-96ce-4769-ab67-f26f3e60134f", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
@@ -318,9 +318,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
                 values: new object[,]
                 {
-                    { "201", 0, "683c8e62-1dfe-4c62-b80c-65f6d6d6c112", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEMsaFmmSIiFv3OzzYgdcatXr9w367XQVTFYOHuIRWgaEUUlmuB7a2WiDnBfcWhfVmg==", null, false, "826a4fe5-f46b-42dc-956d-d7b991f795de", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
-                    { "202", 0, "d9c0c983-5656-4a4f-b987-801188e7aa7d", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAED2EUf1W5tW5nWwOMGiVDa3WV180DlU4B/WTDRweab0Gqjjoskqw0pc++AwaL+BWEA==", null, false, "3e5b8146-f994-4af2-85a6-dd4a8b63015a", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
-                    { "203", 0, "1fb1db8d-041a-46b0-9739-da132691c800", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEG+qpbkdRBhnL438g8Y6h6dSGsF9o2damPWmbcf4YYTk+eJ7/UMk9AbvDTvFb57nIQ==", null, false, "f9f40b86-1e6c-4cf8-8d9e-d85e598de8e7", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
+                    { "201", 0, "bd105b61-8781-4e04-92c4-cc1c37fac6c5", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAECourmSkbqs1Gk6jlFPG715KQ3+6WYML7KH94lo3qqVN3O5NvbZx2B2lMALkV69CQw==", null, false, "f818498e-d1c4-475b-a23f-0e9b11214ada", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
+                    { "202", 0, "06191f64-6a08-444a-93d1-4c0accf07462", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEF8Hp1uWJouIbtg54ftHY7FTr8JHEDEAZ3prWxWuEloein3JwRWO7YCxDjtdyhdt+A==", null, false, "a4ef577f-10cf-4f2a-99bb-413edf48c6d8", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
+                    { "203", 0, "636ea0f2-a2ba-4129-8816-664ec85701cc", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEAtGd/ckNe75nN/9ACAlBBC8YBKBn9PSqHOQTdgWAckuNw6aAacT5iJKk/0k5ugRXg==", null, false, "97689ea0-2454-4ae0-bdfd-2f8ee828ab1b", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,11 +328,11 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "c3e4e521-e476-47bc-a1a4-2aa56264d8da", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
-                    { "9d96427a-cfe7-4d93-9e11-a5339e09201c", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
-                    { "5111828d-12f4-44aa-a4db-1217b059c0f6", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
-                    { "69a31dc6-9f4a-455e-b805-006054333f98", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
-                    { "8141599f-95fb-446d-b249-081bc4a6ffff", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
+                    { "1f129381-584b-4184-9591-80b3c7884e2d", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "5a8fdc11-1485-4455-b70e-fd0fd3210eb3", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "23d08ce6-2503-4cad-b341-ce190ecf2918", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "f9a6fd54-388e-4c8e-b4c1-8d841e842d1e", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "96927c4d-acdc-4b13-b3c4-d2946ad45f54", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
                 });
 
             migrationBuilder.InsertData(
@@ -341,7 +341,10 @@ namespace Smarest.Migrations
                 values: new object[,]
                 {
                     { "201", "100" },
+                    { "201", "101" },
+                    { "201", "102" },
                     { "202", "101" },
+                    { "202", "102" },
                     { "203", "102" }
                 });
 

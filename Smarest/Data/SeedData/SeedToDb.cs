@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace Smarest.Data.SeedData
 {
-    public static class SeedRolesToDb
+    public static class SeedToDb
     {
         public static void Seed(ModelBuilder builder)
         {
@@ -94,9 +94,30 @@ namespace Smarest.Data.SeedData
                 },
                 new IdentityUserRole<string>
                 {
+                    // Bui Ngoc Huy
+                    UserId = "201",
+                    RoleId = "101"
+
+                },
+                new IdentityUserRole<string>
+                {
+                    // Bui Ngoc Huy
+                    UserId = "201",
+                    RoleId = "102"
+
+                },
+                new IdentityUserRole<string>
+                {
                     // Phan Thanh Binh
                     UserId = "202",
                     RoleId = "101"
+
+                },
+                new IdentityUserRole<string>
+                {
+                    // Phan Thanh Binh
+                    UserId = "202",
+                    RoleId = "102"
 
                 },
                 new IdentityUserRole<string>

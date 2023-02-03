@@ -41,7 +41,7 @@ namespace Smarest.Data
                 }
             }
 
-            SeedRolesToDb.Seed(builder);
+            SeedToDb.Seed(builder);
         }
 
 

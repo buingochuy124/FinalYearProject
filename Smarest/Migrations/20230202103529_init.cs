@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Smarest.Migrations
 {
-    public partial class initandseeddata : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,7 @@ namespace Smarest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -308,9 +308,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "c9cac096-6386-4401-aae6-a1576b6092f7", "Role", "Admin", "ADMIN" },
-                    { "101", "d9457052-60b0-45e3-a6c5-aa95e3beb309", "Role", "Manager", "MANAGER" },
-                    { "102", "a68d4c65-1487-44c8-a29d-1c033ab35b3b", "Role", "Guest", "GUEST" }
+                    { "100", "da733f02-5d27-4ed5-aa7a-bd2c211f1030", "Role", "Admin", "ADMIN" },
+                    { "101", "8b80c83e-4bda-4dc3-be93-edd71626f3be", "Role", "Manager", "MANAGER" },
+                    { "102", "64bda9fb-b303-4aed-824c-28e2eb2c54a8", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
@@ -318,9 +318,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
                 values: new object[,]
                 {
-                    { "201", 0, "098ff521-21b7-485c-8016-42019abca41d", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEGwnfTS9eqTs84Lwje+ocvLxEanUZPX3UGPt9NyCs9VU3AIaOnkClM/xXL7Z8EVEkA==", null, false, "af4edc2b-9059-4c40-abf0-d458be91d67a", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
-                    { "202", 0, "189df265-018f-4b11-bb49-5a43530aaf80", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEGuKLexxhgP9YVAuQc6d0rEZDQTHZNMUw7bPiywh+DBts+pTtF21dWgudzjU0PyEnw==", null, false, "063ae687-8bd2-4238-81f6-88f552ebc9f7", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
-                    { "203", 0, "5f62b037-49fb-4918-bb19-ec04e22d0f5a", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEIfBLeA87ANnmlAwfCIvlSvPybwgl/fkbx0aeHdzZ8eBetHrTP1WcZ0h9rSukL0BQA==", null, false, "63895aca-db8f-4439-9dbb-d0dfdc75826c", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
+                    { "201", 0, "683c8e62-1dfe-4c62-b80c-65f6d6d6c112", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEMsaFmmSIiFv3OzzYgdcatXr9w367XQVTFYOHuIRWgaEUUlmuB7a2WiDnBfcWhfVmg==", null, false, "826a4fe5-f46b-42dc-956d-d7b991f795de", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
+                    { "202", 0, "d9c0c983-5656-4a4f-b987-801188e7aa7d", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAED2EUf1W5tW5nWwOMGiVDa3WV180DlU4B/WTDRweab0Gqjjoskqw0pc++AwaL+BWEA==", null, false, "3e5b8146-f994-4af2-85a6-dd4a8b63015a", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
+                    { "203", 0, "1fb1db8d-041a-46b0-9739-da132691c800", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEG+qpbkdRBhnL438g8Y6h6dSGsF9o2damPWmbcf4YYTk+eJ7/UMk9AbvDTvFb57nIQ==", null, false, "f9f40b86-1e6c-4cf8-8d9e-d85e598de8e7", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,11 +328,11 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "572a3a85-da1f-4425-8110-bfc6e583afcf", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
-                    { "87348eb5-762a-494f-8173-1631bb955954", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
-                    { "fd21137e-b792-424a-a7a4-6db03c79e22f", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
-                    { "6b80ba98-6267-4c1d-9d4c-d0f8d38460f5", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
-                    { "600daa55-e7f9-4fb1-88bc-e686feb57c56", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
+                    { "c3e4e521-e476-47bc-a1a4-2aa56264d8da", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "9d96427a-cfe7-4d93-9e11-a5339e09201c", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "5111828d-12f4-44aa-a4db-1217b059c0f6", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "69a31dc6-9f4a-455e-b805-006054333f98", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "8141599f-95fb-446d-b249-081bc4a6ffff", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
                 });
 
             migrationBuilder.InsertData(

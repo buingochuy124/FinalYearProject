@@ -247,6 +247,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Cart", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ItemId")
@@ -275,6 +276,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Category", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -306,6 +308,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Item", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -330,7 +333,7 @@ namespace Smarest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "572a3a85-da1f-4425-8110-bfc6e583afcf",
+                            Id = "c3e4e521-e476-47bc-a1a4-2aa56264d8da",
                             CategoryId = "101",
                             Cost = 30.5,
                             ImageUrl = "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg",
@@ -338,7 +341,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "87348eb5-762a-494f-8173-1631bb955954",
+                            Id = "9d96427a-cfe7-4d93-9e11-a5339e09201c",
                             CategoryId = "101",
                             Cost = 30.5,
                             ImageUrl = "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg",
@@ -346,7 +349,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "fd21137e-b792-424a-a7a4-6db03c79e22f",
+                            Id = "5111828d-12f4-44aa-a4db-1217b059c0f6",
                             CategoryId = "102",
                             Cost = 12.5,
                             ImageUrl = "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add",
@@ -354,7 +357,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "6b80ba98-6267-4c1d-9d4c-d0f8d38460f5",
+                            Id = "69a31dc6-9f4a-455e-b805-006054333f98",
                             CategoryId = "102",
                             Cost = 13.5,
                             ImageUrl = "https://www.pepsi.com/en-us/uploads/images/twil-can.png",
@@ -362,7 +365,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "600daa55-e7f9-4fb1-88bc-e686feb57c56",
+                            Id = "8141599f-95fb-446d-b249-081bc4a6ffff",
                             CategoryId = "103",
                             Cost = 10.0,
                             ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
@@ -373,6 +376,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
@@ -394,6 +398,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.OrderDetail", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ItemId")
@@ -417,9 +422,11 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Table", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -430,6 +437,7 @@ namespace Smarest.Migrations
             modelBuilder.Entity("Smarest.Model.Voucher", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Amount")
@@ -453,21 +461,21 @@ namespace Smarest.Migrations
                         new
                         {
                             Id = "100",
-                            ConcurrencyStamp = "c9cac096-6386-4401-aae6-a1576b6092f7",
+                            ConcurrencyStamp = "da733f02-5d27-4ed5-aa7a-bd2c211f1030",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "101",
-                            ConcurrencyStamp = "d9457052-60b0-45e3-a6c5-aa95e3beb309",
+                            ConcurrencyStamp = "8b80c83e-4bda-4dc3-be93-edd71626f3be",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "102",
-                            ConcurrencyStamp = "a68d4c65-1487-44c8-a29d-1c033ab35b3b",
+                            ConcurrencyStamp = "64bda9fb-b303-4aed-824c-28e2eb2c54a8",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -492,15 +500,15 @@ namespace Smarest.Migrations
                         {
                             Id = "201",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "098ff521-21b7-485c-8016-42019abca41d",
+                            ConcurrencyStamp = "683c8e62-1dfe-4c62-b80c-65f6d6d6c112",
                             Email = "Admin201@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN201@GMAIL.COM",
                             NormalizedUserName = "ADMIN201@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGwnfTS9eqTs84Lwje+ocvLxEanUZPX3UGPt9NyCs9VU3AIaOnkClM/xXL7Z8EVEkA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMsaFmmSIiFv3OzzYgdcatXr9w367XQVTFYOHuIRWgaEUUlmuB7a2WiDnBfcWhfVmg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "af4edc2b-9059-4c40-abf0-d458be91d67a",
+                            SecurityStamp = "826a4fe5-f46b-42dc-956d-d7b991f795de",
                             TwoFactorEnabled = false,
                             UserName = "Admin201@gmail.com",
                             FirstName = "Ngoc Huy",
@@ -510,15 +518,15 @@ namespace Smarest.Migrations
                         {
                             Id = "202",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "189df265-018f-4b11-bb49-5a43530aaf80",
+                            ConcurrencyStamp = "d9c0c983-5656-4a4f-b987-801188e7aa7d",
                             Email = "Manager202@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MANAGER202@GMAIL.COM",
                             NormalizedUserName = "MANAGER202@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGuKLexxhgP9YVAuQc6d0rEZDQTHZNMUw7bPiywh+DBts+pTtF21dWgudzjU0PyEnw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED2EUf1W5tW5nWwOMGiVDa3WV180DlU4B/WTDRweab0Gqjjoskqw0pc++AwaL+BWEA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "063ae687-8bd2-4238-81f6-88f552ebc9f7",
+                            SecurityStamp = "3e5b8146-f994-4af2-85a6-dd4a8b63015a",
                             TwoFactorEnabled = false,
                             UserName = "Manager202@gmail.com",
                             FirstName = "Thanh Binh",
@@ -528,15 +536,15 @@ namespace Smarest.Migrations
                         {
                             Id = "203",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5f62b037-49fb-4918-bb19-ec04e22d0f5a",
+                            ConcurrencyStamp = "1fb1db8d-041a-46b0-9739-da132691c800",
                             Email = "Guest203@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST203@GMAIL.COM",
                             NormalizedUserName = "GUEST203@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIfBLeA87ANnmlAwfCIvlSvPybwgl/fkbx0aeHdzZ8eBetHrTP1WcZ0h9rSukL0BQA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG+qpbkdRBhnL438g8Y6h6dSGsF9o2damPWmbcf4YYTk+eJ7/UMk9AbvDTvFb57nIQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "63895aca-db8f-4439-9dbb-d0dfdc75826c",
+                            SecurityStamp = "f9f40b86-1e6c-4cf8-8d9e-d85e598de8e7",
                             TwoFactorEnabled = false,
                             UserName = "Guest203@gmail.com",
                             FirstName = "Hoai Anh",

@@ -7,7 +7,7 @@ namespace Smarest.Repository.IRepository
 {
     public interface ICategoryRepository
     {
-        Task<List<Category>> GetCategory();
+        Task<List<Category>> GetCategories();
         Task<Category> GetCategory(string Id);
         Task<UserManagerResponse> Create(Category category);
         Task<UserManagerResponse> Delete(string id);

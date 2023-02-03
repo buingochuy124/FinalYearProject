@@ -16,10 +16,10 @@ using Smarest.ViewModel;
 namespace Smarest.Controller.User
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] 
     public class CategoriesController : ControllerBase
     {
-        private ICategoryRepository _categoryRepos;
+        private readonly ICategoryRepository _categoryRepos;
 
         public CategoriesController(ICategoryRepository categoryRepos)
         {
@@ -29,7 +29,7 @@ namespace Smarest.Controller.User
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            List<Category> categories = await _categoryRepos.GetCategory();
+            List<Category> categories = await _categoryRepos.GetCategories();
             if (categories == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent);
@@ -68,10 +68,10 @@ namespace Smarest.Controller.User
             return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
 
         }
+
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(string id, Category category)
         {
-            if (!ModelState.IsValid) return BadRequest();
             UserManagerResponse result = await _categoryRepos.Edit(id, category);
             return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
         }

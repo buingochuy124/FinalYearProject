@@ -26,8 +26,9 @@ namespace Smarest.Repository
                 {
                     Name = category.Name,
                 };
-                var createCategory = await _context.Categories.AddAsync(newCategory);
+                _context.Categories.Add(newCategory);
                 _context.SaveChanges();
+
                 return new UserManagerResponse
                 {
                     Message = "Category Created",
@@ -38,31 +39,80 @@ namespace Smarest.Repository
             {
                 return new UserManagerResponse
                 {
-
+                    Message = "Category create fail...",
+                    IsSuccess = false,
                 };
             }
         }
 
 
-        public async Task<List<Category>> GetCategory()
+        public async Task<List<Category>> GetCategories()
         {
             return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Category> GetCategory(string Id)
+        public async Task<Category> GetCategory(string id)
         {
-            var category =  await _context.Categories.SingleOrDefaultAsync(c => c.Id == Id);
+            var category =  await _context.Categories.SingleOrDefaultAsync(c => c.Id == id);
             return category;
         }
 
         public async Task<UserManagerResponse> Delete(string id)
         {
-            throw new System.NotImplementedException();
+            var category = await _context.Categories.SingleOrDefaultAsync(c => c.Id == id);
+
+            if (category == null)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Category not found"
+                };
+            }
+
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Category Deleted"
+            };
         }
 
         public async Task<UserManagerResponse> Edit(string id, Category category)
         {
-            throw new System.NotImplementedException();
+          
+            _context.Entry(category).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (GetCategory(id) == null)
+                {
+                    return new UserManagerResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Category not found"
+
+                    };
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Category edited"
+
+            };
         }
     }
 }

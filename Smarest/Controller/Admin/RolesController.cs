@@ -6,21 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
 using Smarest.ViewModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Smarest.Controller.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
     public class RolesController : ControllerBase
     {
-        private IRoleRepository _roleRepository;
+        private readonly IRoleRepository _roleRepository;
         public RolesController(IRoleRepository roleRepository)
         {
             _roleRepository = roleRepository;
         }
 
-        [HttpGet("roles")]
+        [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
             var roles = await _roleRepository.GetRoles();
@@ -32,10 +34,11 @@ namespace Smarest.Controller.Admin
                 return Ok(roles);
             }
         }
-        [HttpGet("roles")]
-        public async Task<IActionResult> GetUserRoles(IdentityUser user)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserRoles(string id)
         {
-            var roles = await _roleRepository.GetUserRoles(user);
+
+            var roles = await _roleRepository.GetUserRoles(id);
             if (roles == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent);
@@ -45,13 +48,19 @@ namespace Smarest.Controller.Admin
                 return Ok(roles);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> AddUserToRoleManager(IdentityUser user)
+        [HttpPost("AddRole")]
+        public async Task<IActionResult> AddUserToRole([FromBody] UserRolesViewModel userRoleViewModel)
         {
-            UserManagerResponse result = await _roleRepository.AddUserToRoleManager(user);
+            UserManagerResponse result = await _roleRepository.AddUserToRole(userRoleViewModel);
             return result.IsSuccess ? Ok() : StatusCode(StatusCodes.Status400BadRequest);
         }
 
+        [HttpPost("RemoveRole")]
+        public async Task<IActionResult> RemoveUserToRole([FromBody] UserRolesViewModel userRoleViewModel)
+        {
+            UserManagerResponse result = await _roleRepository.RemoveUserFromRole(userRoleViewModel);
+            return result.IsSuccess ? Ok() : StatusCode(StatusCodes.Status400BadRequest);
+        }
 
 
 

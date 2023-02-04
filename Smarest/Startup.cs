@@ -97,6 +97,8 @@ namespace Smarest
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ITableRepository, TableRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
 
 
             services.AddRazorPages();

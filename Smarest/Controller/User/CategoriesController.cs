@@ -52,6 +52,7 @@ namespace Smarest.Controller.User
         // POST: api/Categories/create
 
         [HttpPost("create")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
         public async Task<IActionResult> CreateCategory(Category category)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -62,6 +63,7 @@ namespace Smarest.Controller.User
 
         // DELETE: api/Categories/5
         [HttpDelete("delete/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
         public async Task<IActionResult> Delete(string id)
         {
             UserManagerResponse result = await _categoryRepos.Delete(id);
@@ -70,6 +72,7 @@ namespace Smarest.Controller.User
         }
 
         [HttpPut("edit/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
         public async Task<IActionResult> Edit(string id, Category category)
         {
             UserManagerResponse result = await _categoryRepos.Edit(id, category);

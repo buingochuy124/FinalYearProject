@@ -71,6 +71,8 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
+
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
             var result = await _itemRepos.Create(item);
@@ -83,6 +85,7 @@ namespace Smarest.Controller.User
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
         public async Task<ActionResult<Item>> DeleteItem(string id)
         {
             var result = await _itemRepos.Delete(id);

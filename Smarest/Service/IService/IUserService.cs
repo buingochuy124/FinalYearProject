@@ -1,4 +1,5 @@
-﻿using Smarest.ViewModel;
+﻿using Smarest.Model;
+using Smarest.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,5 +17,7 @@ namespace Smarest.Service.IService
         Task<UserManagerResponse> ForgetPasswordAsync(string email);
 
         Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model);
+
+  
     }
 }

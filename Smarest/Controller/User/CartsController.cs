@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Smarest.Data;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
+using Smarest.ViewModel;
 
 namespace Smarest.Controller.User
 {
@@ -22,7 +23,7 @@ namespace Smarest.Controller.User
     {
         private readonly ICartRepository _cartRepository;
 
-        public CartsController(ICartRepository cartRepository, UserManager<IdentityUser> userManger)
+        public CartsController(ICartRepository cartRepository)
         {
             _cartRepository = cartRepository;
         }
@@ -41,11 +42,11 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("AddToCart")]
-        public async Task<ActionResult<Cart>> AddToUserCart(string itemId)
+        public async Task<ActionResult<Cart>> AddToUserCart([FromBody]ItemViewModel item)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var result = await _cartRepository.AddItemToUserCart(itemId, userId);
+            var result = await _cartRepository.AddItemToUserCart(item.Id, userId);
             if(result.IsSuccess == false)
             {
                 return BadRequest(result);
@@ -54,12 +55,12 @@ namespace Smarest.Controller.User
         }
 
         // DELETE: api/Carts/5
-        [HttpDelete("RemoveUserCart/{id}")]
-        public async Task<ActionResult<Cart>> DeleteFromUserCart(string itemId)
+        [HttpDelete("RemoveUserCart")]
+        public async Task<ActionResult<Cart>> DeleteFromUserCart([FromBody] ItemViewModel item)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var result = await _cartRepository.DeleteItemFromUserCart(itemId, userId);
+            var result = await _cartRepository.DeleteItemFromUserCart(item.Id, userId);
             if (result.IsSuccess == false)
             {
                 return BadRequest(result);

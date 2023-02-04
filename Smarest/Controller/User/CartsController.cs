@@ -25,7 +25,6 @@ namespace Smarest.Controller.User
         public CartsController(ICartRepository cartRepository, UserManager<IdentityUser> userManger)
         {
             _cartRepository = cartRepository;
-            _userManger = userManger;
         }
 
         // GET: api/Carts

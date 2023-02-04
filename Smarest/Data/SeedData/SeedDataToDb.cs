@@ -14,7 +14,7 @@ namespace Smarest.Data.SeedData
             SeedUsers(builder);
             SeedUserRoles(builder);
             SeedCategories(builder);
-            SeedItem(builder);
+            SeedItems(builder);
         }
         public static void SeedRoles(ModelBuilder builder)
         {
@@ -147,7 +147,7 @@ namespace Smarest.Data.SeedData
                     Name = "Other"
                 }); 
         }
-        public static void SeedItem(ModelBuilder builder)
+        public static void SeedItems(ModelBuilder builder)
         {
             builder.Entity<Item>().HasData(
                new Item()
@@ -185,7 +185,7 @@ namespace Smarest.Data.SeedData
                new Item()
                {
                    Id = Guid.NewGuid().ToString(),
-                   Name = "tissue",
+                   Name = "Tissue",
                    Cost = 10.0,
                    ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
                    CategoryId = "103"

@@ -19,6 +19,7 @@ namespace Smarest.Controller.User
 
     public class ItemsController : ControllerBase
     {
+
         private readonly IItemRepository _itemRepos;
         public ItemsController(IItemRepository itemRepos)
         {
@@ -55,59 +56,43 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
         public async Task<IActionResult> Edit(string id, Item item)
         {
             var result = await _itemRepos.Edit(id, item);
-
-
-            return NoContent();
+            if(result.IsSuccess == false)
+            {
+                return StatusCode(StatusCodes.Status409Conflict,result.Message);
+            }
+            return Ok(result);
         }
 
-        //// POST: api/Items
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<Item>> PostItem(Item item)
-        //{
-        //    _context.Items.Add(item);
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        if (ItemExists(item.Id))
-        //        {
-        //            return Conflict();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        // POST: api/Items
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<Item>> PostItem(Item item)
+        {
+            var result = await _itemRepos.Create(item);
+            if(result.IsSuccess == false)
+            {
+                return StatusCode(StatusCodes.Status409Conflict,result);
+            }
+            return Ok(result);
+        }
 
-        //    return CreatedAtAction("GetItem", new { id = item.Id }, item);
-        //}
+        // DELETE: api/Items/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Item>> DeleteItem(string id)
+        {
+            var result = await _itemRepos.Delete(id);
+            if (result.IsSuccess == false)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, result);
+            }
+            return Ok(result);
+        }
 
-        //// DELETE: api/Items/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Item>> DeleteItem(string id)
-        //{
-        //    var item = await _context.Items.FindAsync(id);
-        //    if (item == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Items.Remove(item);
-        //    await _context.SaveChangesAsync();
-
-        //    return item;
-        //}
-
-        //private bool ItemExists(string id)
-        //{
-        //    return _context.Items.Any(e => e.Id == id);
-        //}
+       
     }
 }

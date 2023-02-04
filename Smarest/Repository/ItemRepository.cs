@@ -1,4 +1,6 @@
-﻿using Smarest.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Smarest.Data;
+using Smarest.Model;
 using Smarest.Repository.IRepository;
 using Smarest.ViewModel;
 using System.Collections.Generic;
@@ -8,29 +10,124 @@ namespace Smarest.Repository
 {
     public class ItemRepository : IItemRepository
     {
-        public Task<UserManagerResponse> Create(Item item)
+        private ApplicationDbContext _context;
+
+        public ItemRepository(ApplicationDbContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
         }
 
-        public Task<UserManagerResponse> Delete(string id)
+        public async Task<UserManagerResponse> Create(Item item)
         {
-            throw new System.NotImplementedException();
+            _context.Items.Add(item);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                if(GetItem(item.Id) != null)
+                {
+                    return new UserManagerResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Item Already Exist ..."
+                    };
+                }
+                throw;
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Item Created ..."
+            };
         }
 
-        public Task<UserManagerResponse> Edit(string id, Item item)
+        public async Task<UserManagerResponse> Delete(string id)
         {
-            throw new System.NotImplementedException();
+            var item = await GetItem(id);
+            if (item == null)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Item not found ..."
+                };
+            }
+            
+            _context.Items.Remove(item);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Some thing went wrong ..."
+                };
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Item Deleted ..."
+            };
         }
 
-        public Task<Item> GetItem(string Id)
+        public async Task<UserManagerResponse> Edit(string id, Item item)
         {
-            throw new System.NotImplementedException();
+            _context.Entry(item).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                if(GetItem(id) == null)
+                {
+                    return new UserManagerResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Item not found ..."
+                    };
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Item Edited ..."
+            };
+
         }
 
-        public Task<List<Item>> GetItems()
+        public async Task<Item> GetItem(string id)
         {
-            throw new System.NotImplementedException();
+            var item = await _context.Items.SingleOrDefaultAsync(i => i.Id == id);
+            return item;
+        }
+
+        public async Task<List<Item>> GetItems()
+        {
+            var items = new List<Item>();
+            try
+            {
+                items = await _context.Items.ToListAsync();
+            }
+            catch (System.Exception)
+            {
+                return items;         
+            }
+            return items;
+
         }
     }
 }

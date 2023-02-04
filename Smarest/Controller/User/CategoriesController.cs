@@ -55,7 +55,7 @@ namespace Smarest.Controller.User
         public async Task<IActionResult> CreateCategory(Category category)
         {
             if (!ModelState.IsValid) return BadRequest();
-            UserManagerResponse result = await _categoryRepos.Create(category);
+            var result = await _categoryRepos.Create(category);
             return result.IsSuccess ? StatusCode(StatusCodes.Status204NoContent) : BadRequest();
            
         }

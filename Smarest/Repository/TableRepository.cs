@@ -1,4 +1,6 @@
-﻿using Smarest.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using Smarest.Data;
+using Smarest.Model;
 using Smarest.Repository.IRepository;
 using Smarest.ViewModel;
 using System.Collections.Generic;
@@ -8,29 +10,105 @@ namespace Smarest.Repository
 {
     public class TableRepository : ITableRepository
     {
-        public Task<UserManagerResponse> Create(Table table)
+        private readonly ApplicationDbContext _context;
+        public TableRepository(ApplicationDbContext context)
         {
-            throw new System.NotImplementedException();
+            _context = context;
         }
 
-        public Task<UserManagerResponse> Delete(string id)
+        public async Task<UserManagerResponse> Create(Table table)
         {
-            throw new System.NotImplementedException();
+            var result = await _context.Tables.AddAsync(table);
+            if(result == null)
+            {
+                return new UserManagerResponse
+                {
+                    Message = "Added Table Fail ...",
+                    IsSuccess = false,
+                };
+            }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Some Thing Wrong, Please Try Again ..."
+                };
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Added Table"
+            };
         }
 
-        public Task<UserManagerResponse> Edit(string id, Table table)
+        public async Task<UserManagerResponse> Delete(string id)
         {
-            throw new System.NotImplementedException();
+            var table = await _context.Tables.SingleOrDefaultAsync(t => t.Id == id);
+            var result =  _context.Tables.Remove(table);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Some Thing Wrong, Please Try Again ..."
+                };
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Removed Table"
+            };
         }
 
-        public Task<Table> GetTable(string Id)
+        public async Task<UserManagerResponse> Edit(string id, Table table)
         {
-            throw new System.NotImplementedException();
+            _context.Entry(table).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                if (GetTable(id) == null)
+                {
+                    return new UserManagerResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Table not found ..."
+                    };
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return new UserManagerResponse
+            {
+                IsSuccess = true,
+                Message = "Table Edited ..."
+            };
         }
 
-        public Task<List<Table>> GetTables()
+        public async Task<Table> GetTable(string id)
         {
-            throw new System.NotImplementedException();
+            var table = await _context.Tables.SingleOrDefaultAsync(t => t.Id == id);
+            return table;
+        }
+
+        public async Task<List<Table>> GetTables()
+        {
+            var tables = await _context.Tables.ToListAsync();
+            return tables;
         }
     }
 }

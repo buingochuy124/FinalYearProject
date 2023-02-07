@@ -16,9 +16,14 @@ namespace Smarest.Repository
             _context = context;
         }
 
-        public async Task<UserManagerResponse> Create(Table table)
+        public async Task<UserManagerResponse> Create(TableViewModel table)
         {
-            var result = await _context.Tables.AddAsync(table);
+            var newTable = new Table
+            {
+                Id = table.Id,
+                Name = table.Name,
+            };
+            var result = await _context.Tables.AddAsync(newTable);
             if(result == null)
             {
                 return new UserManagerResponse
@@ -69,9 +74,14 @@ namespace Smarest.Repository
             };
         }
 
-        public async Task<UserManagerResponse> Edit(string id, Table table)
+        public async Task<UserManagerResponse> Edit(string id, TableViewModel table)
         {
-            _context.Entry(table).State = EntityState.Modified;
+            var putTable = new Table
+            {
+                Id = table.Id,
+                Name = table.Name
+            };
+            _context.Entry(putTable).State = EntityState.Modified;
 
             try
             {

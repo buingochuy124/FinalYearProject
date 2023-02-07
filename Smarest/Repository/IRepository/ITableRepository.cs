@@ -9,8 +9,8 @@ namespace Smarest.Repository.IRepository
     {
         Task<List<Table>> GetTables();
         Task<Table> GetTable(string Id);
-        Task<UserManagerResponse> Create(Table table);
+        Task<UserManagerResponse> Create(TableViewModel table);
         Task<UserManagerResponse> Delete(string id);
-        Task<UserManagerResponse> Edit(string id, Table table);
+        Task<UserManagerResponse> Edit(string id, TableViewModel table);
     }
 }

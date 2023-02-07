@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Smarest.Data;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
+using Smarest.ViewModel;
 
 namespace Smarest.Controller.User
 {
@@ -53,9 +54,9 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTable(string id, Table table)
+        public async Task<IActionResult> PutTable(string id ,[FromBody] TableViewModel model )
         {
-            var result = await _tableRepository.Edit(id, table);
+            var result = await _tableRepository.Edit(id, model);
             if(result.IsSuccess == false)
             {
                 return BadRequest(result);
@@ -67,7 +68,7 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Table>> PostTable(Table table)
+        public async Task<ActionResult<Table>> PostTable(TableViewModel table)
         {
             var result = await _tableRepository.Create(table);
             if (result.IsSuccess == false)

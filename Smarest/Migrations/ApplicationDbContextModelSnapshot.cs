@@ -259,6 +259,24 @@ namespace Smarest.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("Smarest.Model.BookingModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("Smarest.Model.Cart", b =>
                 {
                     b.Property<string>("Id")
@@ -348,7 +366,7 @@ namespace Smarest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1f129381-584b-4184-9591-80b3c7884e2d",
+                            Id = "e54056f7-e182-444f-90ca-c3f2beffd90c",
                             CategoryId = "101",
                             Cost = 30.5,
                             ImageUrl = "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg",
@@ -356,7 +374,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "5a8fdc11-1485-4455-b70e-fd0fd3210eb3",
+                            Id = "3e6c0109-8105-4c3c-b623-4b7500491dcd",
                             CategoryId = "101",
                             Cost = 30.5,
                             ImageUrl = "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg",
@@ -364,7 +382,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "23d08ce6-2503-4cad-b341-ce190ecf2918",
+                            Id = "c89e27b5-d837-4f62-8fa0-21c0c0fb92a8",
                             CategoryId = "102",
                             Cost = 12.5,
                             ImageUrl = "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add",
@@ -372,7 +390,7 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "f9a6fd54-388e-4c8e-b4c1-8d841e842d1e",
+                            Id = "391eac7a-39e1-4995-abd3-fd6b7db7cf34",
                             CategoryId = "102",
                             Cost = 13.5,
                             ImageUrl = "https://www.pepsi.com/en-us/uploads/images/twil-can.png",
@@ -380,11 +398,43 @@ namespace Smarest.Migrations
                         },
                         new
                         {
-                            Id = "96927c4d-acdc-4b13-b3c4-d2946ad45f54",
+                            Id = "13bf1bb0-f662-4c0f-938c-d039130a5c8e",
                             CategoryId = "103",
                             Cost = 10.0,
                             ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
-                            Name = "tissue"
+                            Name = "Tissue"
+                        },
+                        new
+                        {
+                            Id = "1a106da3-617e-4291-80c4-67f9608608d5",
+                            CategoryId = "101",
+                            Cost = 304.5,
+                            ImageUrl = "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg",
+                            Name = "Spaghetti al pomodoro"
+                        },
+                        new
+                        {
+                            Id = "87eae7ec-e97c-46d2-8c85-122b9c5a8b21",
+                            CategoryId = "101",
+                            Cost = 312.5,
+                            ImageUrl = "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg",
+                            Name = "Turkey and ham pie"
+                        },
+                        new
+                        {
+                            Id = "1d1c016a-0e59-4482-b445-7e507c64e52e",
+                            CategoryId = "101",
+                            Cost = 124.5,
+                            ImageUrl = "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg",
+                            Name = "Crispy pork"
+                        },
+                        new
+                        {
+                            Id = "2051b7be-002a-4414-a5fe-73a4e06719b4",
+                            CategoryId = "101",
+                            Cost = 747.5,
+                            ImageUrl = "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg",
+                            Name = "Steak with chips"
                         });
                 });
 
@@ -476,21 +526,21 @@ namespace Smarest.Migrations
                         new
                         {
                             Id = "100",
-                            ConcurrencyStamp = "722a06df-759c-4f0e-9079-0052ed811dd9",
+                            ConcurrencyStamp = "1223e5bc-d7cf-4ef1-b4f8-24482a97e436",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "101",
-                            ConcurrencyStamp = "d36a580f-8325-4df4-985a-22b8901b6828",
+                            ConcurrencyStamp = "afc76b14-6409-4a8e-bc54-a8479b255332",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "102",
-                            ConcurrencyStamp = "893499e3-96ce-4769-ab67-f26f3e60134f",
+                            ConcurrencyStamp = "8db32dac-d34c-410f-a511-ecc36cda2576",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -508,6 +558,9 @@ namespace Smarest.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("User");
 
                     b.HasData(
@@ -515,15 +568,15 @@ namespace Smarest.Migrations
                         {
                             Id = "201",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bd105b61-8781-4e04-92c4-cc1c37fac6c5",
+                            ConcurrencyStamp = "5cc747b8-d8a4-4d28-97ec-57ca3ddd5d2a",
                             Email = "Admin201@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN201@GMAIL.COM",
                             NormalizedUserName = "ADMIN201@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECourmSkbqs1Gk6jlFPG715KQ3+6WYML7KH94lo3qqVN3O5NvbZx2B2lMALkV69CQw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELO3/sc3MYV6SZm7GoFd9NdqQ25Pz8Z/jwU8J8RT5qo2G2E4olPc5eEXXXo9cluacg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f818498e-d1c4-475b-a23f-0e9b11214ada",
+                            SecurityStamp = "0cf3a6f1-70be-468b-a0c1-08a5b97529c8",
                             TwoFactorEnabled = false,
                             UserName = "Admin201@gmail.com",
                             FirstName = "Ngoc Huy",
@@ -533,15 +586,15 @@ namespace Smarest.Migrations
                         {
                             Id = "202",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "06191f64-6a08-444a-93d1-4c0accf07462",
+                            ConcurrencyStamp = "177bbb15-89b5-416d-bc76-7e083e2d381c",
                             Email = "Manager202@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MANAGER202@GMAIL.COM",
                             NormalizedUserName = "MANAGER202@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF8Hp1uWJouIbtg54ftHY7FTr8JHEDEAZ3prWxWuEloein3JwRWO7YCxDjtdyhdt+A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMlXpHmABixfRg30w0x4jaZF4ycQMBQCyusDiF3CtLMefHwmsgBAvlKbPh9P6RowPA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a4ef577f-10cf-4f2a-99bb-413edf48c6d8",
+                            SecurityStamp = "ccd63959-3cda-4e2d-8c90-079daa8de91b",
                             TwoFactorEnabled = false,
                             UserName = "Manager202@gmail.com",
                             FirstName = "Thanh Binh",
@@ -551,15 +604,15 @@ namespace Smarest.Migrations
                         {
                             Id = "203",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "636ea0f2-a2ba-4129-8816-664ec85701cc",
+                            ConcurrencyStamp = "8c1e6a04-317f-4b49-b31c-303ad3663c80",
                             Email = "Guest203@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST203@GMAIL.COM",
                             NormalizedUserName = "GUEST203@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAtGd/ckNe75nN/9ACAlBBC8YBKBn9PSqHOQTdgWAckuNw6aAacT5iJKk/0k5ugRXg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK5B0cZ3TNsu8lfL+BoVtbdQzlrXCrYwkhZk1HxxVKNsXQsO8oBiUyNmnff5EnA7Lg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "97689ea0-2454-4ae0-bdfd-2f8ee828ab1b",
+                            SecurityStamp = "accc9eb1-500a-478d-bda5-9df2468c97cd",
                             TwoFactorEnabled = false,
                             UserName = "Guest203@gmail.com",
                             FirstName = "Hoai Anh",
@@ -616,6 +669,13 @@ namespace Smarest.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Smarest.Model.BookingModel", b =>
+                {
+                    b.HasOne("Smarest.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Smarest.Model.Cart", b =>

@@ -7,8 +7,8 @@ namespace Smarest.Repository.IRepository
 {
     public interface ICartRepository
     {
-        Task<List<Cart>> GetCartsOfUser(string userId);
-        Task<UserManagerResponse> AddItemToUserCart(string itemId, string userId);
+        Task<List<CartViewModel>> GetCartsOfUser(string userId);
+        Task<UserManagerResponse> AddItemToUserCart(string itemId,string tableId, string userId);
         Task<UserManagerResponse> DeleteItemFromUserCart(string itemId, string userId);
         Task<UserManagerResponse> ClearCartOfUser(string userId);
     }

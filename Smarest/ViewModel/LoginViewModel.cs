@@ -17,5 +17,7 @@ namespace Smarest.ViewModel
         [StringLength(50, MinimumLength = 5)]
         public string Password { get; set; }
 
+
+
     }
 }

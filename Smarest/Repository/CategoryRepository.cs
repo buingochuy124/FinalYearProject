@@ -27,7 +27,7 @@ namespace Smarest.Repository
                     Name = category.Name,
                 };
                 _context.Categories.Add(newCategory);
-                _context.SaveChanges();
+               await _context.SaveChangesAsync();
 
                 return new UserManagerResponse
                 {

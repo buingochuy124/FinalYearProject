@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,7 @@ using Smarest.Repository.IRepository;
 using Smarest.Service;
 using Smarest.Service.IService;
 using Smarest.Services;
+using Smarest.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,8 @@ namespace Smarest
 {
     public class Startup
     {
+        readonly string MyPolicy = "_myPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,10 +45,19 @@ namespace Smarest
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddCors(c => c.AddPolicy("AllowOrigin", options => options
-               .AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader()));
+            
+         
+            services.AddCors(options => 
+                { 
+                    options.AddPolicy(name: MyPolicy, 
+                        builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials()); 
+                });
+
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -110,7 +123,8 @@ namespace Smarest
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseCors(MyPolicy);
 
             if (env.IsDevelopment())
             {
@@ -135,8 +149,12 @@ namespace Smarest
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                                   name: "default",
-                                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}")
+                    .RequireCors(MyPolicy); 
+
+               
+
                 endpoints.MapRazorPages();
             });
         }

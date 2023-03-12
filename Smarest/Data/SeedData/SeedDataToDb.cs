@@ -189,7 +189,41 @@ namespace Smarest.Data.SeedData
                    Cost = 10.0,
                    ImageUrl = "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg",
                    CategoryId = "103"
-               });
+               },
+                new Item()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Spaghetti al pomodoro",
+                    Cost = 304.5,
+                    ImageUrl = "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg",
+                    CategoryId = "101"
+                },
+                new Item()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Turkey and ham pie",
+                    Cost = 312.5,
+                    ImageUrl = "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg",
+                    CategoryId = "101"
+                },
+                new Item()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Crispy pork",
+                    Cost = 124.5,
+                    ImageUrl = "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg",
+                    CategoryId = "101"
+                },
+                new Item()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Steak with chips",
+                    Cost = 747.5,
+                    ImageUrl = "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg",
+                    CategoryId = "101"
+                }
+
+                );
 
         }
       

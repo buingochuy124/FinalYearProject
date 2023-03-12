@@ -15,7 +15,7 @@ namespace Smarest.Controller.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Guest)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Guest)]
 
     public class ItemsController : ControllerBase
     {
@@ -36,6 +36,16 @@ namespace Smarest.Controller.User
                 return StatusCode(StatusCodes.Status204NoContent);
             }
             return Ok(items);
+        }
+        [HttpGet("foods")]
+        public async Task<ActionResult<List<Item>>> GetFoods()
+        {
+            var food = await _itemRepos.GetFoods();
+            if (food == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            return Ok(food);
         }
 
         // GET: api/Items/5

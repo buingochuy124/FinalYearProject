@@ -20,7 +20,7 @@ namespace Smarest.Repository
             _userManager = userManager;
             _context = context;
         }
-        public async Task<UserManagerResponse> AddItemToUserCart(string itemId, string userId)
+        public async Task<UserManagerResponse> AddItemToUserCart(string itemId, string tableId, string userId)
         {
             var cartFromUser = await _context.Carts.Where(c => c.UserId == userId).ToListAsync();
             var item = cartFromUser.SingleOrDefault(c => c.ItemId == itemId);
@@ -38,8 +38,10 @@ namespace Smarest.Repository
             var newItem = new Cart
             {
                 ItemId = itemId,
+                ItemQuantity = 1,
                 UserId = userId
             };
+            newItem.TableId = tableId;
             _context.Carts.Add(newItem);
             try
             {
@@ -117,10 +119,29 @@ namespace Smarest.Repository
             };
         }
 
-        public async Task<List<Cart>> GetCartsOfUser(string userId)
+        public async Task<List<CartViewModel>> GetCartsOfUser(string userId)
         {
             var carts = await _context.Carts.Where(c => c.UserId == userId).ToListAsync();
-            return carts;
+            var result = new List<CartViewModel>();
+            foreach (var item in carts)
+            {
+                result.Add(new CartViewModel
+                {
+                    Id = item.Id,
+                    ItemId = item.ItemId,
+                    UserId = item.UserId,
+                    ItemQuantity = item.ItemQuantity,         
+                });
+            };
+
+            result.ForEach(r => r.ItemName = _context.Items
+                .SingleOrDefault(i => i.Id == r.ItemId)
+                .Name);
+            result.ForEach(r => r.Cost = _context.Items
+              .SingleOrDefault(i => i.Id == r.ItemId)
+              .Cost);
+            
+            return result;
         }
     }
 }

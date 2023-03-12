@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System;
 using Smarest.ViewModel;
 using Smarest.Service.IService;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace Smarest.Controller.Auth
 {
@@ -54,10 +56,10 @@ namespace Smarest.Controller.Auth
                     return Ok(result);
                 }
 
-                return BadRequest(result);
+                return StatusCode(StatusCodes.Status401Unauthorized,result);
             }
 
-            return BadRequest("Some properties are not valid");
+            return NoContent();
         }
 
         // /api/auth/confirmemail?userid&token
@@ -91,7 +93,11 @@ namespace Smarest.Controller.Auth
 
             return BadRequest(result); // 400
         }
-
+        [HttpPost("logout")]
+        public  IActionResult LogOut()
+        {
+            return Ok();
+        }
         // api/auth/resetpassword
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
@@ -108,7 +114,26 @@ namespace Smarest.Controller.Auth
 
             return BadRequest("Some properties are not valid");
         }
-
+        [HttpPost("RefreshToken")]
+        public async Task<IActionResult> RefeshToken([FromBody] UserRefreshTokenViewModel userRefreshTokenViewModel)
+        {
+            var result = await _userService.GenerateRefreshToken(userRefreshTokenViewModel);
+            if(result.IsSuccess == false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpPost("Google")]
+        public async Task<IActionResult> Google(CredentialResponse credentialResponse) {
+            if(credentialResponse.credential == "")
+            {
+                return NoContent();
+            }
+            var result = await _userService.LoginGoogle(credentialResponse);
+            
+            return Ok(result);
+        }
 
     }
 }

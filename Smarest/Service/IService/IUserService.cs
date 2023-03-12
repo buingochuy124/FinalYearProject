@@ -18,6 +18,9 @@ namespace Smarest.Service.IService
 
         Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model);
 
-  
+        Task<UserManagerResponse> GenerateRefreshToken(UserRefreshTokenViewModel model);
+
+        Task<UserManagerResponse> LoginGoogle(CredentialResponse credentialResponse);
+
     }
 }

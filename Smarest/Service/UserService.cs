@@ -1,7 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EllipticCurve.Utils;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Smarest.Data;
 using Smarest.Model;
 using Smarest.Service;
 using Smarest.Service.IService;
@@ -9,25 +18,34 @@ using Smarest.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Smarest.Services
 {
     public class UserService : IUserService
     {
-        private UserManager<IdentityUser> _userManger;
+        private UserManager<IdentityUser> _userManager;
         private IConfiguration _configuration;
         private IMailService _mailService;
         private RoleManager<IdentityRole> _roleManager;
-        public UserService(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
+        private SignInManager<IdentityUser> _signInManager;
+        private ApplicationDbContext _context;
+        
+
+        public UserService(ApplicationDbContext context,RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService) 
         {
             _roleManager = roleManager;
-            _userManger = userManager;
+            _userManager = userManager;
             _configuration = configuration;
             _mailService = mailService; 
+            _context = context;
         }
 
         public async Task<UserManagerResponse> RegisterUserAsync(RegisterViewModel model)
@@ -48,12 +66,12 @@ namespace Smarest.Services
                 UserName = model.Email,
             };
 
-            var result = await _userManger.CreateAsync(identityUser, model.Password);
+            var result = await _userManager.CreateAsync(identityUser, model.Password);
             //var addUserToGuestRole = 
 
             if (result.Succeeded)
             {
-                var confirmEmailToken = await _userManger.GenerateEmailConfirmationTokenAsync(identityUser);
+                var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(identityUser);
 
                 var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
                 var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
@@ -82,7 +100,7 @@ namespace Smarest.Services
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginViewModel model)
         {
-            var user = await _userManger.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if(user == null)
             {
@@ -93,7 +111,9 @@ namespace Smarest.Services
                 };
             }
 
-            var result = await _userManger.CheckPasswordAsync(user, model.Password);
+
+
+            var result = await _userManager.CheckPasswordAsync(user, model.Password);
 
             if(!result)
                 return new UserManagerResponse
@@ -107,8 +127,8 @@ namespace Smarest.Services
                 new Claim("Email", model.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
-            var userClaims = await _userManger.GetClaimsAsync(user);
-            var userRoles = await _userManger.GetRolesAsync(user);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
             claims.AddRange(userClaims);
 
             foreach (var userRole in userRoles)
@@ -126,26 +146,57 @@ namespace Smarest.Services
             }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
 
+
+
             var token = new JwtSecurityToken(
                 issuer: _configuration["AuthSettings:Issuer"],
                 audience: _configuration["AuthSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now,
+                claims: claims,           
+                expires: DateTime.Now.AddHours(24),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
             string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var refreshToken = new JwtSecurityToken(
+                issuer: _configuration["AuthSettings:Issuer"],
+                audience: _configuration["AuthSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMonths(6),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+            string refreshTokenAsString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+
+            var userToUpdate = await _context.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
+
+            userToUpdate.RefreshToken = refreshTokenAsString;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                return new UserManagerResponse
+                {
+                    Message = "Some thing wrong",
+                    IsSuccess = false,
+                    ExpireDate = token.ValidTo,
+                    RefeshToken = refreshTokenAsString,
+                };
+            }
 
             return new UserManagerResponse
             {
                 Message = tokenAsString,
                 IsSuccess = true,
-                ExpireDate = token.ValidTo
+                ExpireDate = token.ValidTo,
+                RefeshToken = refreshTokenAsString,
             };
         }
 
         public async Task<UserManagerResponse> ConfirmEmailAsync(string userId, string token)
         {
-            var user = await _userManger.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return new UserManagerResponse
                 {
@@ -156,7 +207,7 @@ namespace Smarest.Services
             var decodedToken = WebEncoders.Base64UrlDecode(token);
             string normalToken = Encoding.UTF8.GetString(decodedToken);
 
-            var result = await _userManger.ConfirmEmailAsync(user, normalToken);
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
 
             if (result.Succeeded)
                 return new UserManagerResponse
@@ -175,7 +226,7 @@ namespace Smarest.Services
 
         public async Task<UserManagerResponse> ForgetPasswordAsync(string email)
         {
-            var user = await _userManger.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 return new UserManagerResponse
                 {
@@ -183,7 +234,7 @@ namespace Smarest.Services
                     Message = "No user associated with email",
                 };
 
-            var token = await _userManger.GeneratePasswordResetTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
@@ -202,7 +253,7 @@ namespace Smarest.Services
         public async Task<UserManagerResponse> ResetPasswordAsync(ResetPasswordViewModel model)
         {
           
-            var user = await _userManger.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
                 return new UserManagerResponse
                 {
@@ -220,7 +271,7 @@ namespace Smarest.Services
             var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
             string normalToken = Encoding.UTF8.GetString(decodedToken);
 
-            var result = await _userManger.ResetPasswordAsync(user, normalToken, model.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
 
             if (result.Succeeded)
                 return new UserManagerResponse
@@ -236,7 +287,174 @@ namespace Smarest.Services
                 Errors = result.Errors.Select(e => e.Description),
             };
         }
+        public async  Task<UserManagerResponse> GenerateRefreshToken(UserRefreshTokenViewModel model)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.RefreshToken == model.RefreshToken);
+            if(user == null)
+            {
+                return new UserManagerResponse
+                {
+                    IsSuccess = false,
+                    Message = "Refresh Token Isvalid",
+                };
+            }
+            else
+            {
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
 
-     
+                var claims = new List<Claim>
+                {
+                new Claim("Email", user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                };
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
+                claims.AddRange(userClaims);
+
+                foreach (var userRole in userRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, userRole));
+                    var role = await _roleManager.FindByNameAsync(userRole);
+                    if (role != null)
+                    {
+                        var roleClaims = await _roleManager.GetClaimsAsync(role);
+                        foreach (Claim roleClaim in roleClaims)
+                        {
+                            claims.Add(roleClaim);
+                        }
+                    }
+                }
+
+
+
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["AuthSettings:Issuer"],
+                    audience: _configuration["AuthSettings:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now,
+                    signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+
+                string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+                return new UserManagerResponse
+                {
+                    RefeshToken = model.RefreshToken,
+                    IsSuccess = true,
+                    Message = tokenAsString,
+                };
+            }      
+        }
+
+        public async Task<UserManagerResponse> LoginGoogle(CredentialResponse credentialResponse)
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+
+            var configCredentialResponse = credentialResponse.credential.Substring(1);
+            configCredentialResponse = configCredentialResponse.Substring(0, configCredentialResponse.Length - 1);
+
+            credentialResponse.credential = configCredentialResponse;
+
+           
+            var jwtToken = jwtHandler.ReadJwtToken(credentialResponse.credential);
+            var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+        
+
+
+
+            var user = _context.Users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+            {
+                user = new User()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = email,
+                    NormalizedUserName = email.ToUpper(),
+                    Email = email,
+                    NormalizedEmail = email.ToUpper(),
+                    SecurityStamp = Guid.NewGuid().ToString("D"),
+                };
+
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(user, Utils.Role.Guest);
+                   
+                }
+            }
+
+
+            var claims = new List<Claim>
+            {
+                new Claim("Email", email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+            };
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(userClaims);
+
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
+
+
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["AuthSettings:Issuer"],
+                audience: _configuration["AuthSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(24),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+            var tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var refreshToken = new JwtSecurityToken(
+                issuer: _configuration["AuthSettings:Issuer"],
+                audience: _configuration["AuthSettings:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMonths(6),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+            string refreshTokenAsString = new JwtSecurityTokenHandler().WriteToken(refreshToken);
+
+
+            var userToUpdate = await _context.Users.SingleOrDefaultAsync(u => u.Id == user.Id);
+
+            userToUpdate.RefreshToken = refreshTokenAsString;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                return new UserManagerResponse
+                {
+                    Message = "Some thing wrong",
+                    IsSuccess = false,
+                    ExpireDate = token.ValidTo,
+                    RefeshToken = refreshTokenAsString,
+                };
+            }
+
+            return new UserManagerResponse
+            {
+                Message = tokenAsString,
+                IsSuccess = true,
+                ExpireDate = token.ValidTo,
+                RefeshToken = refreshTokenAsString,
+            };
+        }
     }
 }

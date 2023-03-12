@@ -4,6 +4,7 @@ using Smarest.Model;
 using Smarest.Repository.IRepository;
 using Smarest.ViewModel;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Smarest.Repository
@@ -107,6 +108,13 @@ namespace Smarest.Repository
                 Message = "Item Edited ..."
             };
 
+        }
+
+        public async Task<List<Item>> GetFoods()
+        {
+            var food =  _context.Categories.SingleOrDefault(c => c.Name == "Food");
+            var foods =  await _context.Items.Where(f => f.CategoryId == food.Id).ToListAsync();
+            return foods;
         }
 
         public async Task<Item> GetItem(string id)

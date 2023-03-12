@@ -30,10 +30,10 @@ namespace Smarest.Controller.User
 
         // GET: api/Carts
         [HttpGet("UserCart")]
-        public async Task<ActionResult<IEnumerable<Cart>>> GetCartsOfUser()
+        public async Task<ActionResult<IEnumerable<CartViewModel>>> GetCartsOfUser()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            List<Cart> cartOfUser = await _cartRepository.GetCartsOfUser(userId);
+            List<CartViewModel> cartOfUser = await _cartRepository.GetCartsOfUser(userId);
 
             return cartOfUser;
         }      
@@ -42,11 +42,15 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("AddToCart")]
-        public async Task<ActionResult<Cart>> AddToUserCart([FromBody]ItemViewModel item)
+        public async Task<ActionResult<Cart>> AddToUserCart(ItemViewModel item)
         {
+            if(item.TableId == "")
+            {
+                return BadRequest();
+            }
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var result = await _cartRepository.AddItemToUserCart(item.Id, userId);
+            var result = await _cartRepository.AddItemToUserCart(item.Id, item.TableId, userId);
             if(result.IsSuccess == false)
             {
                 return BadRequest(result);
@@ -56,7 +60,7 @@ namespace Smarest.Controller.User
 
         // DELETE: api/Carts/5
         [HttpDelete("RemoveUserCart")]
-        public async Task<ActionResult<Cart>> DeleteFromUserCart([FromBody] ItemViewModel item)
+        public async Task<ActionResult<Cart>> DeleteFromUserCart(ItemViewModel item)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 

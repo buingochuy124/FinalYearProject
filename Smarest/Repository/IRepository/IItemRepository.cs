@@ -9,8 +9,10 @@ namespace Smarest.Repository.IRepository
     {
         Task<List<Item>> GetItems();
         Task<Item> GetItem(string Id);
+        Task<List<Item>> GetFoods();
         Task<UserManagerResponse> Create(Item item);
         Task<UserManagerResponse> Delete(string id);
         Task<UserManagerResponse> Edit(string id, Item item);
+
     }
 }

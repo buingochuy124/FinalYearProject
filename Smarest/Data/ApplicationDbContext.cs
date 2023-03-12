@@ -24,7 +24,8 @@ namespace Smarest.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
-
+        public DbSet<BookingModel> Bookings { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder builder)

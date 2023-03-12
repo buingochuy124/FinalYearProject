@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Smarest.Migrations
 {
-    public partial class init : Migration
+    public partial class initDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,7 +67,8 @@ namespace Smarest.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    LastName = table.Column<string>(nullable: true),
+                    RefreshToken = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,6 +128,25 @@ namespace Smarest.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    BookingDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -308,19 +328,19 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "722a06df-759c-4f0e-9079-0052ed811dd9", "Role", "Admin", "ADMIN" },
-                    { "101", "d36a580f-8325-4df4-985a-22b8901b6828", "Role", "Manager", "MANAGER" },
-                    { "102", "893499e3-96ce-4769-ab67-f26f3e60134f", "Role", "Guest", "GUEST" }
+                    { "100", "1223e5bc-d7cf-4ef1-b4f8-24482a97e436", "Role", "Admin", "ADMIN" },
+                    { "101", "afc76b14-6409-4a8e-bc54-a8479b255332", "Role", "Manager", "MANAGER" },
+                    { "102", "8db32dac-d34c-410f-a511-ecc36cda2576", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName", "RefreshToken" },
                 values: new object[,]
                 {
-                    { "201", 0, "bd105b61-8781-4e04-92c4-cc1c37fac6c5", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAECourmSkbqs1Gk6jlFPG715KQ3+6WYML7KH94lo3qqVN3O5NvbZx2B2lMALkV69CQw==", null, false, "f818498e-d1c4-475b-a23f-0e9b11214ada", false, "Admin201@gmail.com", "Ngoc Huy", "Bui" },
-                    { "202", 0, "06191f64-6a08-444a-93d1-4c0accf07462", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEF8Hp1uWJouIbtg54ftHY7FTr8JHEDEAZ3prWxWuEloein3JwRWO7YCxDjtdyhdt+A==", null, false, "a4ef577f-10cf-4f2a-99bb-413edf48c6d8", false, "Manager202@gmail.com", "Thanh Binh", "Phan" },
-                    { "203", 0, "636ea0f2-a2ba-4129-8816-664ec85701cc", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEAtGd/ckNe75nN/9ACAlBBC8YBKBn9PSqHOQTdgWAckuNw6aAacT5iJKk/0k5ugRXg==", null, false, "97689ea0-2454-4ae0-bdfd-2f8ee828ab1b", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc" }
+                    { "201", 0, "5cc747b8-d8a4-4d28-97ec-57ca3ddd5d2a", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAELO3/sc3MYV6SZm7GoFd9NdqQ25Pz8Z/jwU8J8RT5qo2G2E4olPc5eEXXXo9cluacg==", null, false, "0cf3a6f1-70be-468b-a0c1-08a5b97529c8", false, "Admin201@gmail.com", "Ngoc Huy", "Bui", null },
+                    { "202", 0, "177bbb15-89b5-416d-bc76-7e083e2d381c", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEMlXpHmABixfRg30w0x4jaZF4ycQMBQCyusDiF3CtLMefHwmsgBAvlKbPh9P6RowPA==", null, false, "ccd63959-3cda-4e2d-8c90-079daa8de91b", false, "Manager202@gmail.com", "Thanh Binh", "Phan", null },
+                    { "203", 0, "8c1e6a04-317f-4b49-b31c-303ad3663c80", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEK5B0cZ3TNsu8lfL+BoVtbdQzlrXCrYwkhZk1HxxVKNsXQsO8oBiUyNmnff5EnA7Lg==", null, false, "accc9eb1-500a-478d-bda5-9df2468c97cd", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc", null }
                 });
 
             migrationBuilder.InsertData(
@@ -328,11 +348,15 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "1f129381-584b-4184-9591-80b3c7884e2d", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
-                    { "5a8fdc11-1485-4455-b70e-fd0fd3210eb3", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
-                    { "23d08ce6-2503-4cad-b341-ce190ecf2918", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
-                    { "f9a6fd54-388e-4c8e-b4c1-8d841e842d1e", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
-                    { "96927c4d-acdc-4b13-b3c4-d2946ad45f54", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "tissue" }
+                    { "e54056f7-e182-444f-90ca-c3f2beffd90c", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "3e6c0109-8105-4c3c-b623-4b7500491dcd", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "1a106da3-617e-4291-80c4-67f9608608d5", "101", 304.5, "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg", "Spaghetti al pomodoro" },
+                    { "87eae7ec-e97c-46d2-8c85-122b9c5a8b21", "101", 312.5, "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg", "Turkey and ham pie" },
+                    { "1d1c016a-0e59-4482-b445-7e507c64e52e", "101", 124.5, "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg", "Crispy pork" },
+                    { "2051b7be-002a-4414-a5fe-73a4e06719b4", "101", 747.5, "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg", "Steak with chips" },
+                    { "c89e27b5-d837-4f62-8fa0-21c0c0fb92a8", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "391eac7a-39e1-4995-abd3-fd6b7db7cf34", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "13bf1bb0-f662-4c0f-938c-d039130a5c8e", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "Tissue" }
                 });
 
             migrationBuilder.InsertData(
@@ -347,6 +371,11 @@ namespace Smarest.Migrations
                     { "202", "102" },
                     { "203", "102" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_UserId",
+                table: "Bookings",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_ItemId",
@@ -425,6 +454,9 @@ namespace Smarest.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Bookings");
+
             migrationBuilder.DropTable(
                 name: "Carts");
 

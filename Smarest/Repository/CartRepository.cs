@@ -140,7 +140,12 @@ namespace Smarest.Repository
             result.ForEach(r => r.Cost = _context.Items
               .SingleOrDefault(i => i.Id == r.ItemId)
               .Cost);
-            
+            result.ForEach(r => r.ItemImageUrl = _context.Items
+              .SingleOrDefault(i => i.Id == r.ItemId)
+              .ImageUrl);
+            result.ForEach(r => r.UserEmail = _context.Users
+                     .SingleOrDefault(i => i.Id == r.UserId)
+                     .Email);
             return result;
         }
     }

@@ -13,11 +13,12 @@ namespace Smarest.ViewModel
         public int ItemQuantity { get; set; }
 
         public string UserId { get; set; }
-     
+        public string UserEmail { get; set; }
         public string TableId { get; set; }
         public double Cost { get; set; }
 
         public string CategoryName { get; set; }
   
+        public string ItemImageUrl { get; set; }
     }
 }

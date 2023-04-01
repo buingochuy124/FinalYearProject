@@ -12,7 +12,7 @@ namespace Smarest.Model
 
         [ForeignKey("Item")]
         public string ItemId { get; set; }
-        public Item Items { get; set; }
+        public Item Item { get; set; }
 
 
         public int ItemQuantity {get;set;}

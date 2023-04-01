@@ -57,6 +57,16 @@ namespace Smarest.Controller.User
             }
             return Ok(result);
         }
+        [HttpPost("Checkout")]
+        public async Task<ActionResult<Cart>> Checkout(CheckOutViewModel checkOutViewModel)
+        {
+            var result = await _cartRepository.UserCheckOut(checkOutViewModel.accessToken);
+            if (result.IsSuccess == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         // DELETE: api/Carts/5
         [HttpDelete("RemoveUserCart")]
@@ -84,6 +94,8 @@ namespace Smarest.Controller.User
             }
             return Ok(result);
         }
+
+
 
     }
 }

@@ -325,8 +325,6 @@ namespace Smarest.Services
                     }
                 }
 
-
-
                 var token = new JwtSecurityToken(
                     issuer: _configuration["AuthSettings:Issuer"],
                     audience: _configuration["AuthSettings:Audience"],

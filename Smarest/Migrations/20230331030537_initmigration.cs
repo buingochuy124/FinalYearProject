@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Smarest.Migrations
 {
-    public partial class initDb : Migration
+    public partial class initmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -155,7 +155,7 @@ namespace Smarest.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    Total = table.Column<float>(nullable: false),
+                    Total = table.Column<double>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -328,9 +328,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "1223e5bc-d7cf-4ef1-b4f8-24482a97e436", "Role", "Admin", "ADMIN" },
-                    { "101", "afc76b14-6409-4a8e-bc54-a8479b255332", "Role", "Manager", "MANAGER" },
-                    { "102", "8db32dac-d34c-410f-a511-ecc36cda2576", "Role", "Guest", "GUEST" }
+                    { "100", "cbf689ea-e2ff-4ac1-9a15-f3d0da2e2b84", "Role", "Admin", "ADMIN" },
+                    { "101", "0dcd97de-bab9-4d5c-94c6-66afac108f6f", "Role", "Manager", "MANAGER" },
+                    { "102", "3e464d4e-098d-42ca-a74a-32581b5cbe91", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
@@ -338,9 +338,9 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName", "RefreshToken" },
                 values: new object[,]
                 {
-                    { "201", 0, "5cc747b8-d8a4-4d28-97ec-57ca3ddd5d2a", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAELO3/sc3MYV6SZm7GoFd9NdqQ25Pz8Z/jwU8J8RT5qo2G2E4olPc5eEXXXo9cluacg==", null, false, "0cf3a6f1-70be-468b-a0c1-08a5b97529c8", false, "Admin201@gmail.com", "Ngoc Huy", "Bui", null },
-                    { "202", 0, "177bbb15-89b5-416d-bc76-7e083e2d381c", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEMlXpHmABixfRg30w0x4jaZF4ycQMBQCyusDiF3CtLMefHwmsgBAvlKbPh9P6RowPA==", null, false, "ccd63959-3cda-4e2d-8c90-079daa8de91b", false, "Manager202@gmail.com", "Thanh Binh", "Phan", null },
-                    { "203", 0, "8c1e6a04-317f-4b49-b31c-303ad3663c80", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEK5B0cZ3TNsu8lfL+BoVtbdQzlrXCrYwkhZk1HxxVKNsXQsO8oBiUyNmnff5EnA7Lg==", null, false, "accc9eb1-500a-478d-bda5-9df2468c97cd", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc", null }
+                    { "201", 0, "fb801c0a-c29c-4aa0-b5bc-a711363a9974", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEHdu7xjz7NpPZspoGQ9LlM9Dw3xXPcb/KaUvWtyx0U+YoM4YKcR8CVjjJ0btDCbVhQ==", null, false, "a2552f7b-b02d-43c9-8bf0-51499aa29ab2", false, "Admin201@gmail.com", "Ngoc Huy", "Bui", null },
+                    { "202", 0, "f8ce2eac-a857-4886-8528-bcb6ef1a081c", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEK3F+IFs+EpNPo+XetvA9pMM4TgZjKnK4aDaBQVcu6Aizgj5nRYi5m7H+SgJ7vh4zg==", null, false, "b1907d3e-7106-44b8-a92c-0d3351a026af", false, "Manager202@gmail.com", "Thanh Binh", "Phan", null },
+                    { "203", 0, "f642a9ec-2afe-4d4a-a29d-a03b52bfe40f", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAENaNxhbaGDdJBl6JCXLut7tZ5BS73lS2HFCIFyjafj2zq19Lv91/tZe889UijRN2JQ==", null, false, "e73a66a1-02f7-4d75-bb76-818dc763f3a7", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc", null }
                 });
 
             migrationBuilder.InsertData(
@@ -348,15 +348,15 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "e54056f7-e182-444f-90ca-c3f2beffd90c", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
-                    { "3e6c0109-8105-4c3c-b623-4b7500491dcd", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
-                    { "1a106da3-617e-4291-80c4-67f9608608d5", "101", 304.5, "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg", "Spaghetti al pomodoro" },
-                    { "87eae7ec-e97c-46d2-8c85-122b9c5a8b21", "101", 312.5, "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg", "Turkey and ham pie" },
-                    { "1d1c016a-0e59-4482-b445-7e507c64e52e", "101", 124.5, "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg", "Crispy pork" },
-                    { "2051b7be-002a-4414-a5fe-73a4e06719b4", "101", 747.5, "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg", "Steak with chips" },
-                    { "c89e27b5-d837-4f62-8fa0-21c0c0fb92a8", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
-                    { "391eac7a-39e1-4995-abd3-fd6b7db7cf34", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
-                    { "13bf1bb0-f662-4c0f-938c-d039130a5c8e", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "Tissue" }
+                    { "a35baa48-b13a-4468-a73c-e26c7efcb8b2", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "830e5cf2-1ba2-413b-99e8-ba34c2cf7292", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "16f42ea4-e582-4195-8f24-92a251ee8656", "101", 304.5, "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg", "Spaghetti al pomodoro" },
+                    { "c634f69c-2197-411e-96e8-a953fd75bd26", "101", 312.5, "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg", "Turkey and ham pie" },
+                    { "27de51c2-f29c-4e72-a5b8-c912da25f2b9", "101", 124.5, "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg", "Crispy pork" },
+                    { "1bcc9b58-3e28-425c-9005-1384a1b9eb8d", "101", 747.5, "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg", "Steak with chips" },
+                    { "549ad248-da9e-48bf-81dd-b23695c39e28", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "557f3aed-b2cd-46cc-b813-2cd52bb473e9", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "f5925fb8-b4cb-43e8-8ead-1d3368e60d7c", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "Tissue" }
                 });
 
             migrationBuilder.InsertData(

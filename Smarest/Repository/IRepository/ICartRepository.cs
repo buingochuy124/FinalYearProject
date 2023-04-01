@@ -11,5 +11,6 @@ namespace Smarest.Repository.IRepository
         Task<UserManagerResponse> AddItemToUserCart(string itemId,string tableId, string userId);
         Task<UserManagerResponse> DeleteItemFromUserCart(string itemId, string userId);
         Task<UserManagerResponse> ClearCartOfUser(string userId);
+        Task<UserManagerResponse> UserCheckOut(string accessToken);
     }
 }

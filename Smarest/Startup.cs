@@ -124,7 +124,7 @@ namespace Smarest
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            app.UseCors(MyPolicy);
+            //app.UseCors(MyPolicy);
 
             if (env.IsDevelopment())
             {
@@ -150,8 +150,8 @@ namespace Smarest
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}")
-                    .RequireCors(MyPolicy); 
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    //.RequireCors(MyPolicy); 
 
                
 

@@ -2,5 +2,5 @@
 RUN mkdir work
 COPY ./output ./work
 WORKDIR ./work
-EXPOSE 5000 5001
+EXPOSE 80
 ENTRYPOINT ["dotnet", "Smarest.dll"]

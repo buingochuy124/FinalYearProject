@@ -47,16 +47,16 @@ namespace Smarest
 
             
          
-            services.AddCors(options => 
-                { 
-                    options.AddPolicy(name: MyPolicy, 
-                        builder => builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .WithOrigins("http://localhost:3000")
-                        .AllowCredentials()); 
-                });
+            //services.AddCors(options => 
+            //    { 
+            //        options.AddPolicy(name: MyPolicy, 
+            //            builder => builder
+            //            .AllowAnyOrigin()
+            //            .AllowAnyMethod()
+            //            .AllowAnyHeader()
+            //            .WithOrigins("http://localhost:3000")
+            //            .AllowCredentials()); 
+            //    });
 
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>

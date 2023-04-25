@@ -34,6 +34,7 @@ namespace Smarest.Controller.Admin
                 return Ok(roles);
             }
         }
+     
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserRoles(string id)
         {

@@ -41,7 +41,11 @@ namespace Smarest.Controller.Auth
 
             return BadRequest("Some properties are not valid"); // Status code: 400
         }
-
+        [HttpGet("Health")]
+        public string Health()
+        {
+            return "Up";
+        }
         // /api/auth/login
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)

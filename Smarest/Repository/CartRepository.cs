@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Newtonsoft.Json.Linq;
 using Smarest.Data;
 using Smarest.Model;
@@ -29,6 +30,20 @@ namespace Smarest.Repository
         }
         public async Task<UserManagerResponse> AddItemToUserCart(string itemId, string tableId, string userId)
         {
+
+            var table = await _context.Tables.SingleOrDefaultAsync(t => t.Id == tableId);
+            table.IsAvailable = true;
+            _context.Update(table);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
             var cartFromUser = await _context.Carts.Where(c => c.UserId == userId).ToListAsync();
             var item = cartFromUser.SingleOrDefault(c => c.ItemId == itemId);
             if(item != null)
@@ -172,6 +187,20 @@ namespace Smarest.Repository
                 .Include(c => c.Item)            
                 .ToList();
 
+
+            var tableId = cartOfUser[0].TableId;
+            var table = _context.Tables.SingleOrDefault(t => t.Id == tableId);
+            table.IsAvailable = false;
+            _context.Update(table);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             double cartTotal = 0;
             foreach (var cart in cartOfUser)
             {
@@ -200,6 +229,7 @@ namespace Smarest.Repository
             }
             _context.SaveChanges();
             await ClearCartOfUser(userId);
+
 
             return new UserManagerResponse
             {

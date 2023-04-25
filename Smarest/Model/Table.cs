@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Smarest.Model
 {
@@ -11,5 +12,8 @@ namespace Smarest.Model
 
         [Required]
         public string Name { get; set; }
+
+        public bool IsAvailable { get; set; }
+
     }
 }

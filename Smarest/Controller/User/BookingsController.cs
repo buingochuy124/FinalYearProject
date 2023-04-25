@@ -23,14 +23,14 @@ namespace Smarest.Controller.User
 
         // GET: api/Bookings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingModel>>> GetBookings()
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
-            return await _context.Bookings.ToListAsync();
+            return await _context.Bookings.Where(b => b.BookingDate > DateTime.Now).ToListAsync();
         }
 
         // GET: api/Bookings/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BookingModel>> GetBookingModel(string id)
+        public async Task<ActionResult<Booking>> GetBookingModel(string id)
         {
             var bookingModel = await _context.Bookings.FindAsync(id);
 
@@ -46,7 +46,7 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBookingModel(string id, BookingModel bookingModel)
+        public async Task<IActionResult> PutBookingModel(string id, Booking bookingModel)
         {
             if (id != bookingModel.Id)
             {
@@ -78,7 +78,7 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<BookingModel>> PostBookingModel(BookingModel bookingModel)
+        public async Task<ActionResult<Booking>> PostBookingModel(Booking bookingModel)
         {
             _context.Bookings.Add(bookingModel);
             try
@@ -102,7 +102,7 @@ namespace Smarest.Controller.User
 
         // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BookingModel>> DeleteBookingModel(string id)
+        public async Task<ActionResult<Booking>> DeleteBookingModel(string id)
         {
             var bookingModel = await _context.Bookings.FindAsync(id);
             if (bookingModel == null)

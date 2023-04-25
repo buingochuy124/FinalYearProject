@@ -15,7 +15,60 @@ namespace Smarest.Data.SeedData
             SeedUserRoles(builder);
             SeedCategories(builder);
             SeedItems(builder);
+            SeedTable(builder);
+            SeedBooking(builder);
         }
+        public static void SeedBooking(ModelBuilder builder)
+        {
+            builder.Entity<Booking>().HasData(
+              new Booking()
+              {
+                  Id = Guid.NewGuid().ToString(),
+                  BookingDate = DateTime.Now.AddDays(2),
+              }, 
+              new Booking()
+              {
+                  Id = Guid.NewGuid().ToString(),
+                  BookingDate = DateTime.Now.AddDays(3),
+              });
+               
+        }
+
+        public static void SeedTable(ModelBuilder builder)
+        {
+            builder.Entity<Table>().HasData(
+                new Table()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Table 1",
+                    
+                },
+                new Table()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Table 2",
+
+                },
+                new Table()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Table 3",
+
+                },
+                new Table()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Table 4",
+
+                },
+                new Table()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Table 5",
+
+                });
+        }
+
         public static void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<Role>().HasData(

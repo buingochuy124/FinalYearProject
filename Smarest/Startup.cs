@@ -54,9 +54,9 @@ namespace Smarest
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .SetIsOriginAllowed(origin => true)
+                        .WithOrigins("http://localhost:3000")
                         .AllowCredentials());
-            });
+                });
 
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>

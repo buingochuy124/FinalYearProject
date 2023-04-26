@@ -54,7 +54,7 @@ namespace Smarest
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins("http://118.68.56.189:3000")                        
+                        .SetIsOriginAllowed(origin => true)
                         .AllowCredentials());
                 });
 

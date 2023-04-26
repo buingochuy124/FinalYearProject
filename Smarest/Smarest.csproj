@@ -3,10 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Smarest-434F49A5-44FE-4AB9-B186-E332E244693E</UserSecretsId>
+	<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+	<RunWebApplicationAfterPublish>true</RunWebApplicationAfterPublish>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Dockerfile" />
+	<PackageReference Include="Microsoft.AspNetCore.App" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -27,4 +31,10 @@
     <PackageReference Include="SendGrid" Version="9.28.1" />
   </ItemGroup>
 
+	<Target Name="SettingPort">
+		<Exec Command="dotnet dev-certs https --clean" />
+		<Exec Command="dotnet dev-certs https" />
+		<Exec Command="set ASPNETCORE_URLS=https://localhost:5001" />
+		<Exec Command="echo $(ASPNETCORE_HTTPS_PORT)" />
+	</Target>
 </Project>

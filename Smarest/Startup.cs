@@ -56,7 +56,7 @@ namespace Smarest
                         .AllowAnyHeader()
                         .SetIsOriginAllowed(origin => true)
                         .AllowCredentials());
-                });
+            });
 
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>

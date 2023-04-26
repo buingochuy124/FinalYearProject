@@ -45,18 +45,18 @@ namespace Smarest
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            
-         
-            //services.AddCors(options => 
-            //    { 
-            //        options.AddPolicy(name: MyPolicy, 
-            //            builder => builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader()
-            //            .WithOrigins("http://localhost:3000")
-            //            .AllowCredentials()); 
-            //    });
+
+
+            services.AddCors(options =>
+                {
+                    options.AddPolicy(name: MyPolicy,
+                        builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials());
+                });
 
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -124,7 +124,7 @@ namespace Smarest
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            //app.UseCors(MyPolicy);
+            app.UseCors(MyPolicy);
 
             if (env.IsDevelopment())
             {
@@ -150,10 +150,10 @@ namespace Smarest
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                    //.RequireCors(MyPolicy); 
+                    pattern: "{controller=Home}/{action=Index}/{id?}")
+                    .RequireCors(MyPolicy);
 
-               
+
 
                 endpoints.MapRazorPages();
             });

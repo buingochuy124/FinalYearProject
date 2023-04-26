@@ -60,7 +60,7 @@ namespace Smarest.Controller.Auth
                     return Ok(result);
                 }
 
-                return StatusCode(StatusCodes.Status401Unauthorized,result);
+                return StatusCode(StatusCodes.Status204NoContent,result);
             }
 
             return NoContent();

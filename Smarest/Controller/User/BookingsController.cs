@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smarest.Data;
 using Smarest.Model;
+using Smarest.ViewModel;
 
 namespace Smarest.Controller.User
 {
@@ -41,84 +42,17 @@ namespace Smarest.Controller.User
 
             return bookingModel;
         }
-
-        // PUT: api/Bookings/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBookingModel(string id, Booking bookingModel)
+        [HttpPost("createBooking")]
+        public async Task<ActionResult<UserManagerResponse>> CreateNewBooking(BookingViewModel bookingViewModel)
         {
-            if (id != bookingModel.Id)
+            var booking = new Booking
             {
-                return BadRequest();
-            }
-
-            _context.Entry(bookingModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookingModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Bookings
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Booking>> PostBookingModel(Booking bookingModel)
-        {
-            _context.Bookings.Add(bookingModel);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (BookingModelExists(bookingModel.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetBookingModel", new { id = bookingModel.Id }, bookingModel);
-        }
-
-        // DELETE: api/Bookings/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Booking>> DeleteBookingModel(string id)
-        {
-            var bookingModel = await _context.Bookings.FindAsync(id);
-            if (bookingModel == null)
-            {
-                return NotFound();
-            }
-
-            _context.Bookings.Remove(bookingModel);
-            await _context.SaveChangesAsync();
-
-            return bookingModel;
-        }
-
-        private bool BookingModelExists(string id)
-        {
-            return _context.Bookings.Any(e => e.Id == id);
+                UserId = bookingViewModel.UserId,
+                BookingDate = bookingViewModel.BookingDate,
+                TableName = bookingViewModel.TableName,
+            };
+            var result = _context.Bookings.Add(booking);
+            return Ok(result);
         }
     }
 }

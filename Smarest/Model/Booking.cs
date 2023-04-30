@@ -11,7 +11,7 @@ namespace Smarest.Model
         [ForeignKey("User")]
         public string UserId { get; set; }
         public User User { get; set; }
-
+        public string TableName { get; set; }
         public DateTime BookingDate { get; set; }
     }
 }

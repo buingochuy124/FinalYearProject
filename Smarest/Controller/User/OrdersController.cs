@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smarest.Data;
 using Smarest.Model;
+using Smarest.ViewModel;
 
 namespace Smarest.Controller.User
 {
@@ -35,6 +36,72 @@ namespace Smarest.Controller.User
             return result ;
         }
 
+        [HttpGet("AdminGetOrders")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
+        public async Task<ActionResult<List<Order>>> AdminGetOrders()
+        {
+            var result = await _context.Orders.Include(r => r.User).ToListAsync();
+            result.ForEach(r => r.UserName = r.User.UserName);
+            return result ;
+        }
+
+        [HttpGet("YearlyStatistics")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
+        public async Task<ActionResult<List<YearlyStatistics>>> OrderYearlyStatistics()
+        {
+            var orders = await _context.Orders.Include(r => r.User).ToListAsync();
+            orders.ForEach(r => r.UserName = r.User.UserName);
+
+            return orders
+               .GroupBy(order => order.Date.Year)
+               .Select(group => new YearlyStatistics
+               {
+                   Year = group.Key,
+                   TotalOrders = group.Count(),
+                   TotalSales = group.Sum(order => order.Total),
+                   AverageOrderValue = group.Average(order => order.Total)
+               })
+               .ToList();
+        }
+
+        [HttpGet("DailyStatistics")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
+        public async Task<ActionResult<List<DailyStatistics>>> OrderDailyStatistics()
+        {
+            var orders = await _context.Orders.Include(r => r.User).ToListAsync();
+            orders.ForEach(r => r.UserName = r.User.UserName);
+
+            return orders
+               .GroupBy(order => new { Date = order.Date.Date })
+               .Select(group => new DailyStatistics
+               {
+                   Date = group.Key.Date,
+                   TotalOrders = group.Count(),
+                   TotalSales = group.Sum(order => order.Total),
+                   AverageOrderValue = group.Average(order => order.Total)
+               })
+               .ToList();
+        }
+
+        [HttpGet("MonthlyStatistics")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
+        public async Task<ActionResult<List<MonthlyStatistics>>> OrderMonthlyStatistics()
+        {
+            var orders = await _context.Orders.Include(r => r.User).ToListAsync();
+            orders.ForEach(r => r.UserName = r.User.UserName);
+
+            return orders
+                 .GroupBy(order => new { Year = order.Date.Year, Month = order.Date.Month })
+                 .Select(group => new MonthlyStatistics
+                 {
+                     Year = group.Key.Year,
+                     Month = group.Key.Month,
+                     TotalOrders = group.Count(),
+                     TotalSales = group.Sum(order => order.Total),
+                     AverageOrderValue = group.Average(order => order.Total)
+                 })
+                 .ToList();
+        }
         // GET: api/Orders/5
         [HttpGet("{id}")]
 

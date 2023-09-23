@@ -15,6 +15,9 @@ namespace Smarest.Model
          public string UserId {get;set;}
          public User User {get;set;}
 
+         [NotMapped]
+         public string UserName { get;set;}
+
          public double Total {get;set;}
          public DateTime Date{ get; set; }
 

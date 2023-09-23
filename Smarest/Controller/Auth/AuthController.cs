@@ -34,12 +34,12 @@ namespace Smarest.Controller.Auth
                 var result = await _userService.RegisterUserAsync(model);
 
                 if (result.IsSuccess)
-                    return Ok(result); // Status Code: 200 
+                    return Ok(result); 
 
                 return BadRequest(result);
             }
 
-            return BadRequest("Some properties are not valid"); // Status code: 400
+            return BadRequest("Some properties are not valid"); 
         }
         [HttpGet("Health")]
         public string Health()

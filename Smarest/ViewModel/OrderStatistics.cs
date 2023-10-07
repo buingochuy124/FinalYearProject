@@ -38,4 +38,12 @@ namespace Smarest.ViewModel
         public double TotalSales { get; set; }
         public double AverageOrderValue { get; set; }
     }
+    
+    public class TodayStatistics
+    {
+        public int Time { get; set; }
+        public int TotalOrders { get; set; }
+        public double TotalSales { get; set; }
+        public double AverageOrderValue { get; set; }
+    }
 }

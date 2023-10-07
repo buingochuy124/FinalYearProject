@@ -26,7 +26,7 @@ namespace Smarest.Controller.User
         [HttpGet("{id}")]
         public async Task<ActionResult<List<OrderDetail>>> GetOrderDetail(string id)
         {
-             var orderDetail = await _context.OrderDetails.Where(o => o.OrderId == id).Include(o => o.Item).ToListAsync();
+            var orderDetail = await _context.OrderDetails.Where(o => o.OrderId == id).Include(o => o.Item).ToListAsync();
 
             if (orderDetail == null)
             {

@@ -41,30 +41,34 @@ namespace Smarest.Data.SeedData
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Table 1",
-                    
+                    IsAvailable = true,
                 },
                 new Table()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Table 2",
+                    IsAvailable = true,
 
                 },
                 new Table()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Table 3",
+                    IsAvailable = true,
 
                 },
                 new Table()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Table 4",
+                    IsAvailable = true,
 
                 },
                 new Table()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = "Table 5",
+                    IsAvailable = true,
 
                 });
         }
@@ -107,7 +111,7 @@ namespace Smarest.Data.SeedData
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     FirstName = "Ngoc Huy",
                     LastName = "Bui",
-
+                    CreatedDate= DateTime.Now,
                 },
                 new User()
                 {
@@ -119,7 +123,9 @@ namespace Smarest.Data.SeedData
                     PasswordHash = hasher.HashPassword(null, "Default@123"),
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     FirstName = "Thanh Binh",
-                    LastName = "Phan",                  
+                    LastName = "Phan",
+                    CreatedDate = DateTime.Now,
+
                 },
                 new User()
                 {
@@ -131,7 +137,9 @@ namespace Smarest.Data.SeedData
                     PasswordHash = hasher.HashPassword(null, "Default@123"),
                     SecurityStamp = Guid.NewGuid().ToString("D"),
                     FirstName = "Hoai Anh",
-                    LastName = "Bui Ngoc"
+                    LastName = "Bui Ngoc",
+                    CreatedDate = DateTime.Now
+
                 });
         }
 
@@ -187,7 +195,7 @@ namespace Smarest.Data.SeedData
                 new Category()
                 {
                     Id = "101",
-                    Name = "Food"
+                    Name = "Main Dishes"
                 },
                 new Category()
                 {

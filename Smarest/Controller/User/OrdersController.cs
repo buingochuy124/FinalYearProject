@@ -31,7 +31,7 @@ namespace Smarest.Controller.User
         public async Task<ActionResult<List<Order>>> Orders()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var result = await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
+            var result = await _context.Orders.Where(o => o.UserId == userId).OrderByDescending(o => o.Date).ToListAsync();
             result.ForEach(r => r.Date.ToString("MM/dd/yyyy"));
             return result ;
         }
@@ -40,11 +40,44 @@ namespace Smarest.Controller.User
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
         public async Task<ActionResult<List<Order>>> AdminGetOrders()
         {
-            var result = await _context.Orders.Include(r => r.User).ToListAsync();
+            var result = await _context.Orders.Include(r => r.User).OrderByDescending(o => o.Date).ToListAsync();
             result.ForEach(r => r.UserName = r.User.UserName);
             return result ;
         }
+        [HttpGet("ManagerGetOrders")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
+        public async Task<ActionResult<List<Order>>> ManagerGetOrders()
+        {
+            DateTime currentDate = DateTime.Today;
 
+            var result = await _context.Orders.Include(r => r.User)
+                .Where(o => o.Date.Date == currentDate)
+                .OrderByDescending(o => o.Date).ToListAsync();
+            
+            result.ForEach(r => r.UserName = r.User.UserName);
+            return result;
+        }
+
+        [HttpGet("TodayStatistic")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
+        public async Task<ActionResult<List<TodayStatistics>>> OrderTodayStatistics()
+        {
+
+            var orders = await _context.Orders.Where(o => o.Date == DateTime.Today).Include(r => r.User).ToListAsync();
+            orders.ForEach(r => r.UserName = r.User.UserName);
+
+            return orders
+               .GroupBy(order => order.Date.Hour)
+               .Select(group => new TodayStatistics
+               {
+                   Time = group.Key,
+                   TotalOrders = group.Count(),
+                   TotalSales = group.Sum(order => order.Total),
+                   AverageOrderValue = group.Average(order => order.Total)
+               })
+               .ToList();
+         
+        }
         [HttpGet("YearlyStatistics")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
         public async Task<ActionResult<List<YearlyStatistics>>> OrderYearlyStatistics()

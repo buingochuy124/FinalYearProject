@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Smarest.Migrations
 {
-    public partial class initdata : Migration
+    public partial class seed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,19 @@ namespace Smarest.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tables",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    IsAvailable = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tables", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -56,6 +69,7 @@ namespace Smarest.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
                     RefreshToken = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -124,6 +138,7 @@ namespace Smarest.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
+                    TableName = table.Column<string>(nullable: true),
                     BookingDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -151,25 +166,6 @@ namespace Smarest.Migrations
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tables",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tables", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tables_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -262,32 +258,6 @@ namespace Smarest.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ItemId = table.Column<string>(nullable: true),
-                    OrderId = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Carts",
                 columns: table => new
                 {
@@ -320,6 +290,41 @@ namespace Smarest.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ItemId = table.Column<string>(nullable: true),
+                    OrderId = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Bookings",
+                columns: new[] { "Id", "BookingDate", "TableName", "UserId" },
+                values: new object[,]
+                {
+                    { "dbe3d202-7aa8-4c50-ab5b-1d22774cb5d5", new DateTime(2023, 10, 7, 21, 12, 10, 519, DateTimeKind.Local).AddTicks(9019), null, null },
+                    { "a60d426c-e89a-48ee-bff9-58d8ae3cccd8", new DateTime(2023, 10, 8, 21, 12, 10, 519, DateTimeKind.Local).AddTicks(9400), null, null }
+                });
+
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Name" },
@@ -335,31 +340,31 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "100", "733b7c29-3424-4a40-94b3-c4afed6154ce", "Role", "Admin", "ADMIN" },
-                    { "101", "cd81aa1f-d57c-4184-8b29-6cfa31e305dc", "Role", "Manager", "MANAGER" },
-                    { "102", "d8524aa4-1bd0-47b1-8802-af15d3ad4eb2", "Role", "Guest", "GUEST" }
+                    { "100", "6f2c8359-4e62-4c9a-a3bf-00b753173ce4", "Role", "Admin", "ADMIN" },
+                    { "101", "2b7e71e0-0395-4c29-aafb-a3ecfeb8ce2f", "Role", "Manager", "MANAGER" },
+                    { "102", "956986e3-edfc-4177-aca2-a0ee45906396", "Role", "Guest", "GUEST" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tables",
-                columns: new[] { "Id", "Name", "UserId" },
+                columns: new[] { "Id", "IsAvailable", "Name" },
                 values: new object[,]
                 {
-                    { "01240f0e-82b8-4e63-b9ba-96c0eea537cb", "Table 1", null },
-                    { "163ad111-dfde-4b11-8646-414d1c14151c", "Table 2", null },
-                    { "446f7dd9-3643-4184-a86e-6d5f18b65f26", "Table 3", null },
-                    { "b5ca2ee9-2295-466a-b096-4ed90c698acd", "Table 4", null },
-                    { "5dc0b1b8-ecf0-4b77-9f4c-25bdede53e0e", "Table 5", null }
+                    { "7cb13f6d-6f59-4fb7-b357-6eb43df59a55", true, "Table 1" },
+                    { "9fa96f9a-5e4b-48c2-a055-e1f65b047257", true, "Table 2" },
+                    { "9580fa2b-5694-4ba3-9266-1cfda7287fb3", true, "Table 3" },
+                    { "4ac52103-72df-45fb-9b5e-93eb052226fd", true, "Table 4" },
+                    { "1b201cef-2203-4d5b-8317-ef9dce80ac70", true, "Table 5" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "FirstName", "LastName", "RefreshToken" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "CreatedDate", "FirstName", "LastName", "RefreshToken" },
                 values: new object[,]
                 {
-                    { "201", 0, "7920ecf0-4b9e-4c18-9b08-5b476422e8ff", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEEMrsUBI34vf4UuuIPlKxuylf9YOPsa5jD02mEVNYdcg+wIG9VPRyrgCbjI2AMNjOA==", null, false, "e8f10108-95a0-47ad-8ad6-e2d03a22fad8", false, "Admin201@gmail.com", "Ngoc Huy", "Bui", null },
-                    { "202", 0, "3b92e75f-71f5-4109-a943-de01c28a4da7", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEAF+BrYLqBa1qa0NPfJRvT/Ot3qru1XhcomJO2+FwFaG7MWrEEqrxjC54mWjEXh/pA==", null, false, "fbe35fdf-dead-4157-831d-168ce38ea689", false, "Manager202@gmail.com", "Thanh Binh", "Phan", null },
-                    { "203", 0, "abba4846-b360-4508-b6ae-8c5d3009ab4f", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAEMNS6xRYKdoLTapMPaciZvoXd4+BWkkxHOzWNL3gWqMbPBiNU2vLYnrVqWe+BJolmA==", null, false, "c0c3e483-d2a1-4e7b-ac22-1cb7189da688", false, "Guest203@gmail.com", "Hoai Anh", "Bui Ngoc", null }
+                    { "201", 0, "93f35d99-ce7c-4add-8241-a886dcac7533", "User", "Admin201@gmail.com", false, false, null, "ADMIN201@GMAIL.COM", "ADMIN201@GMAIL.COM", "AQAAAAEAACcQAAAAEGulghiJ9xIrOE8xTxxzVtD5OJkzfwW96LumTFU//5hVLmLSDgUdKkFPqf5qYQDCFg==", null, false, "4c2d2300-21fb-4c26-bd2d-03287347e685", false, "Admin201@gmail.com", new DateTime(2023, 10, 5, 21, 12, 10, 505, DateTimeKind.Local).AddTicks(7786), "Ngoc Huy", "Bui", null },
+                    { "202", 0, "bd100e85-4960-4d06-bb3c-5148712201ac", "User", "Manager202@gmail.com", false, false, null, "MANAGER202@GMAIL.COM", "MANAGER202@GMAIL.COM", "AQAAAAEAACcQAAAAEPsrnyXHwjVnD6sCOjkrMTRkVk/sfuWF0QuCjp3WSUaSU82s17dOu4FKVWbf6HaH7w==", null, false, "d8476147-404d-4dcc-be77-f0ff9270b283", false, "Manager202@gmail.com", new DateTime(2023, 10, 5, 21, 12, 10, 512, DateTimeKind.Local).AddTicks(3031), "Thanh Binh", "Phan", null },
+                    { "203", 0, "7c8568ac-38a1-484c-8c53-0e090bb80b81", "User", "Guest203@gmail.com", false, false, null, "GUEST203@GMAIL.COM", "GUEST203@GMAIL.COM", "AQAAAAEAACcQAAAAECzEb2WXADqeQKx7xmP/Mtln/zfcSLz/WGmVO5poc4xM1xQolwg0WiXSfZMPBfFOaw==", null, false, "93ddb9b6-b0c9-49ef-929f-be6d3f90d115", false, "Guest203@gmail.com", new DateTime(2023, 10, 5, 21, 12, 10, 518, DateTimeKind.Local).AddTicks(1381), "Hoai Anh", "Bui Ngoc", null }
                 });
 
             migrationBuilder.InsertData(
@@ -367,15 +372,15 @@ namespace Smarest.Migrations
                 columns: new[] { "Id", "CategoryId", "Cost", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { "53afef5c-d1e1-420e-a12c-4085dbc48d4f", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
-                    { "7cbe5b1c-1a47-4efb-8b85-0f9854ff3336", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
-                    { "3c3a68bc-485f-4ab6-9764-7c3d5fe4f8b5", "101", 304.5, "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg", "Spaghetti al pomodoro" },
-                    { "b94f0fda-91c2-47b8-bf60-b9aafed334da", "101", 312.5, "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg", "Turkey and ham pie" },
-                    { "ebde0881-3235-4a5b-aaea-71c522d4a5c5", "101", 124.5, "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg", "Crispy pork" },
-                    { "051d64ee-8fde-4e78-ad42-b023bc74543f", "101", 747.5, "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg", "Steak with chips" },
-                    { "e701fe8c-ff22-49f7-a3d3-4f34d7e7496a", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
-                    { "265e6111-45d9-49b8-afaa-e234a847587a", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
-                    { "7ad67ccc-24b6-4a9a-b754-716a7cfff389", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "Tissue" }
+                    { "e79d714f-4cb6-4f91-baee-f0ee2ab14f3f", "101", 30.5, "https://www.jessicagavin.com/wp-content/uploads/2018/09/fried-rice-8-1200.jpg", "Fried rice" },
+                    { "66e43535-dc15-415d-b8dd-ae627e34527e", "101", 30.5, "https://www.allrecipes.com/thmb/r29Rv3SakBBaqpbOZu4fHibsf8k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/236992-santa-maria-grilled-tri-tip-beef-ddmfs-1x1-1-517a088b88a8431c8a41b81c1e978758.jpg", "Santa Maria Grilled Tri-Tip Beef" },
+                    { "9641de9b-c718-4430-adfa-0583bfb53e31", "101", 304.5, "https://www.giallozafferano.com/images/228-22832/spaghetti-with-tomato-sauce_1200x800.jpg", "Spaghetti al pomodoro" },
+                    { "68f59a27-de01-4105-8e11-b2492bb31902", "101", 312.5, "https://www.checkyourfood.com/content/blob/Meals/Turkey-and-ham-pie-recipe-calories-nutrition-facts.jpg", "Turkey and ham pie" },
+                    { "a4dec8d1-ff6c-4b6a-ba23-e0c63e05012e", "101", 124.5, "https://www.thespruceeats.com/thmb/ZmXhBNNc9tFWwnDHTUGFsRCIcrk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/slow-roasted-pork-belly-crispy-skin-3059509-7_preview-5b16dcbb1d6404003605a196.jpeg", "Crispy pork" },
+                    { "12953128-60f2-454a-87a1-011854206005", "101", 747.5, "https://properfoodie.com/wp-content/uploads/2021/04/square-Steak-and-chips-8.jpg", "Steak with chips" },
+                    { "7ceb6584-70b1-4192-9955-f8ec1eeedd02", "102", 12.5, "https://cf.shopee.vn/file/bacb189db5215ac1f25033d76b6c6add", "Coca" },
+                    { "e4770043-bfbe-4cf3-b4ab-642a068d2144", "102", 13.5, "https://www.pepsi.com/en-us/uploads/images/twil-can.png", "Pepsi" },
+                    { "773bf01a-c7f1-4922-85e1-99d048c0652b", "103", 10.0, "https://www.intour.com.vn/upload/2021/03/thumbs/chuyen-san-xuat-khan-uot-kham-lanh-omi-gia-tot-nhat-vn-2.jpg", "Tissue" }
                 });
 
             migrationBuilder.InsertData(
@@ -442,11 +447,6 @@ namespace Smarest.Migrations
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tables_UserId",
-                table: "Tables",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",

@@ -37,10 +37,30 @@ namespace Smarest.Controller.User
             }
             return Ok(items);
         }
-        [HttpGet("foods")]
+        [HttpGet("MainDishes")]
         public async Task<ActionResult<List<Item>>> GetFoods()
         {
             var food = await _itemRepos.GetFoods();
+            if (food == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            return Ok(food);
+        }
+        [HttpGet("drink")]
+        public async Task<ActionResult<List<Item>>> GetDrinks()
+        {
+            var food = await _itemRepos.GetDrinks();
+            if (food == null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            return Ok(food);
+        }
+        [HttpGet("other")]
+        public async Task<ActionResult<List<Item>>> GetOther()
+        {
+            var food = await _itemRepos.GetOther();
             if (food == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent);
@@ -81,9 +101,9 @@ namespace Smarest.Controller.User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Manager)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
 
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        public async Task<ActionResult<Item>> PostItem([FromForm] Item item)
         {
             var result = await _itemRepos.Create(item);
             if(result.IsSuccess == false)

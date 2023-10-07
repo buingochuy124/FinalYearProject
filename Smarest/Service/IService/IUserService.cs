@@ -22,5 +22,7 @@ namespace Smarest.Service.IService
 
         Task<UserManagerResponse> LoginGoogle(CredentialResponse credentialResponse);
 
+        Task<List<User>> GetUsersInRole();
+        
     }
 }

@@ -14,6 +14,8 @@ namespace Smarest.Model
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+
+        public DateTime CreatedDate { get; set; }
         
         public string RefreshToken { get; set; }
         [NotMapped]

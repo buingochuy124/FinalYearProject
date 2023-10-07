@@ -1,5 +1,6 @@
 ﻿using EllipticCurve.Utils;
 using Google.Apis.Auth;
+using Google.Apis.Util;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -60,10 +61,12 @@ namespace Smarest.Services
                     IsSuccess = false,
                 };
 
-            var identityUser = new IdentityUser
+            var identityUser = new User
             {
                 Email = model.Email,
                 UserName = model.Email,
+                CreatedDate = DateTime.Now,
+
             };
 
             var result = await _userManager.CreateAsync(identityUser, model.Password);
@@ -193,6 +196,19 @@ namespace Smarest.Services
                 RefeshToken = refreshTokenAsString,
             };
         }
+
+        public async Task<List<User>> GetUsersInRole()
+        {
+            var identityUsers = await _userManager.GetUsersInRoleAsync("Guest");
+            var userList = identityUsers.ToList();
+            var users = new List<User>();
+
+            userList.ForEach(u => users.Add(_context.Users.SingleOrDefault(user => user.Id == u.Id)));         
+            return users;
+        }
+
+
+
 
         public async Task<UserManagerResponse> ConfirmEmailAsync(string userId, string token)
         {
@@ -352,14 +368,9 @@ namespace Smarest.Services
             configCredentialResponse = configCredentialResponse.Substring(0, configCredentialResponse.Length - 1);
 
             credentialResponse.credential = configCredentialResponse;
-
-           
+            
             var jwtToken = jwtHandler.ReadJwtToken(credentialResponse.credential);
             var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
-
-        
-
-
 
             var user = _context.Users.SingleOrDefault(u => u.Email == email);
             if (user == null)
@@ -372,6 +383,7 @@ namespace Smarest.Services
                     Email = email,
                     NormalizedEmail = email.ToUpper(),
                     SecurityStamp = Guid.NewGuid().ToString("D"),
+                    CreatedDate = DateTime.Now,
                 };
 
                 var result = await _userManager.CreateAsync(user);
@@ -382,12 +394,12 @@ namespace Smarest.Services
                 }
             }
 
-
             var claims = new List<Claim>
             {
                 new Claim("Email", email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
+
             var userClaims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
             claims.AddRange(userClaims);
@@ -406,9 +418,6 @@ namespace Smarest.Services
                 }
             }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
-
-
-
             var token = new JwtSecurityToken(
                 issuer: _configuration["AuthSettings:Issuer"],
                 audience: _configuration["AuthSettings:Audience"],

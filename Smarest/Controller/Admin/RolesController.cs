@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Smarest.Data;
 using Smarest.Model;
 using Smarest.Repository.IRepository;
 using Smarest.ViewModel;
@@ -17,8 +18,10 @@ namespace Smarest.Controller.Admin
     public class RolesController : ControllerBase
     {
         private readonly IRoleRepository _roleRepository;
+
         public RolesController(IRoleRepository roleRepository)
         {
+
             _roleRepository = roleRepository;
         }
 
@@ -34,7 +37,8 @@ namespace Smarest.Controller.Admin
                 return Ok(roles);
             }
         }
-     
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserRoles(string id)
         {
@@ -62,7 +66,6 @@ namespace Smarest.Controller.Admin
             UserManagerResponse result = await _roleRepository.RemoveUserFromRole(userRoleViewModel);
             return result.IsSuccess ? Ok() : StatusCode(StatusCodes.Status400BadRequest);
         }
-
 
 
     }

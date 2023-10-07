@@ -112,8 +112,22 @@ namespace Smarest.Repository
 
         public async Task<List<Item>> GetFoods()
         {
-            var food =  _context.Categories.SingleOrDefault(c => c.Name == "Food");
+            var food =  _context.Categories.SingleOrDefault(c => c.Name == "Main Dishes");
             var foods =  await _context.Items.Where(f => f.CategoryId == food.Id).ToListAsync();
+            return foods;
+        }
+
+        public async Task<List<Item>> GetDrinks()
+        {
+            var food = _context.Categories.SingleOrDefault(c => c.Name == "Drink");
+            var foods = await _context.Items.Where(f => f.CategoryId == food.Id).ToListAsync();
+            return foods;
+        }
+
+        public async Task<List<Item>> GetOther()
+        {
+            var food = _context.Categories.SingleOrDefault(c => c.Name == "Other");
+            var foods = await _context.Items.Where(f => f.CategoryId == food.Id).ToListAsync();
             return foods;
         }
 
@@ -137,5 +151,6 @@ namespace Smarest.Repository
             return items;
 
         }
+
     }
 }

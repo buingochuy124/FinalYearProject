@@ -121,10 +121,7 @@ namespace Smarest.Controller.Admin
                 .OrderByDescending(o => o.Total).ToListAsync();
             var dashBoardUserDataResponse = new List<DashBoardUserDataResponse>();
             orders.ForEach(o => o.OrderDetails = _context.OrderDetails.Where(orderDetails => orderDetails.OrderId == o.Id).ToList());
-
             List<string> userEmails = orders.Select(od => od.User.Email).Distinct().ToList();
-
-
             foreach (var order in orders)
             {
                 int quantity = 0;
@@ -136,8 +133,6 @@ namespace Smarest.Controller.Admin
                     OrderedQuantity = quantity
                 }); 
             }
-
-
             var result = new List<DashBoardUserDataResponse>();
             foreach (var userEmail in userEmails)
             {
@@ -152,12 +147,18 @@ namespace Smarest.Controller.Admin
                     OrderedQuantity = quantity
                 });
             }
-            
-
+           
             return Ok(result.Take(5));
 
         }
+        [HttpPost("DashBoardDoughnutData")]
+        public async Task<ActionResult> DashBoardDoughnutData(DashboardViewModel dashboardViewModel)
+        {
+            DateTime fromDate = dashboardViewModel.EndDate.AddMonths(-3);
 
+            return Ok();
+
+        }
 
     }
 }

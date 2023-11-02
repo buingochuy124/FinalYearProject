@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using EllipticCurve.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,12 +47,43 @@ namespace Smarest.Controller.Admin
             return Ok(result);
                     
         }
-        [HttpGet("DashBoardLineData")]
-        public async Task<ActionResult> DashBoardLineData()
+
+        [HttpPost("DashBoardBarData")]
+        public async Task<ActionResult> DashBoardBarData(DashboardViewModel dashboardViewModel)
         {
-            DateTime fromDate = DateTime.Now.AddMonths(-3);
+            DateTime fromDate = dashboardViewModel.EndDate.AddMonths(-3);
+
+            var orderDetails = await _context.OrderDetails
+                .Include(od => od.Order)
+                .Include(od => od.Item)
+                .Where(od => od.Order.Date >= fromDate && od.Order.Date <= dashboardViewModel.EndDate)
+                .OrderByDescending(od => od.Quantity).ToListAsync();
+
+
+            List<SalesReport> salesReports = new List<SalesReport>();
+                
+            List<string> itemIds = orderDetails.Select(od => od.Item.Id).Distinct().ToList();
+
+            foreach (var itemId in itemIds)
+            {
+                salesReports.Add(new SalesReport
+                {
+                    TotalQuantitySold = orderDetails.Where(orderDetail => orderDetail.Item.Id == itemId)
+                    .Sum(od => od.Quantity),
+
+                    ItemName = _context.Items.SingleOrDefault(i => i.Id==itemId).Name
+                }) ;
+            }
+            var  result = salesReports.OrderByDescending(salesReport =>salesReport.TotalQuantitySold);
+            return Ok(result.Take(3));
+        }
+        [HttpPost("DashBoardLineData")]
+        public async Task<ActionResult> DashBoardLineData(DashboardViewModel dashboardViewModel)
+        {
+            DateTime fromDate = dashboardViewModel.EndDate.AddMonths(-3);
+
             var orders = await _context.Orders
-                .Where(order => order.Date >= fromDate && order.Date <= DateTime.Now)
+                .Where(order => order.Date >= fromDate && order.Date <= dashboardViewModel.EndDate)
                 .ToListAsync();
 
             List<double> result = new List<double>();
@@ -79,6 +111,53 @@ namespace Smarest.Controller.Admin
 
         }
 
-        
+        [HttpPost("DashBoardUserData")]
+        public async Task<ActionResult> DashBoardUserData(DashboardViewModel dashboardViewModel)
+        {
+            DateTime fromDate = dashboardViewModel.EndDate.AddMonths(-3);   
+
+            var orders = await _context.Orders
+                .Include(or => or.User)
+                .OrderByDescending(o => o.Total).ToListAsync();
+            var dashBoardUserDataResponse = new List<DashBoardUserDataResponse>();
+            orders.ForEach(o => o.OrderDetails = _context.OrderDetails.Where(orderDetails => orderDetails.OrderId == o.Id).ToList());
+
+            List<string> userEmails = orders.Select(od => od.User.Email).Distinct().ToList();
+
+
+            foreach (var order in orders)
+            {
+                int quantity = 0;
+                order.OrderDetails.ForEach(or => quantity += or.Quantity);
+                dashBoardUserDataResponse.Add(new DashBoardUserDataResponse
+                {
+                    Email = order.User.Email,
+                    TotalAmount = order.Total,
+                    OrderedQuantity = quantity
+                }); 
+            }
+
+
+            var result = new List<DashBoardUserDataResponse>();
+            foreach (var userEmail in userEmails)
+            {
+                var group = dashBoardUserDataResponse.Where(d => d.Email ==  userEmail).ToList();
+
+                var sum = group.Sum(u => u.TotalAmount);
+                var quantity = group.Sum(u => u.OrderedQuantity);
+                result.Add(new DashBoardUserDataResponse
+                {
+                    Email = userEmail,
+                    TotalAmount = sum,
+                    OrderedQuantity = quantity
+                });
+            }
+            
+
+            return Ok(result.Take(5));
+
+        }
+
+
     }
 }

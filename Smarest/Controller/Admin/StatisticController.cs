@@ -155,8 +155,29 @@ namespace Smarest.Controller.Admin
         public async Task<ActionResult> DashBoardDoughnutData(DashboardViewModel dashboardViewModel)
         {
             DateTime fromDate = dashboardViewModel.EndDate.AddMonths(-3);
+            var orderDetails = await _context.OrderDetails.Include(od => od.Item).ToListAsync();
+            var itemOrderIds = orderDetails.Select(od => od.Item.Id).Distinct();
+            var result = new List<DashBoardDoughnutDataResponse>();
 
-            return Ok();
+            foreach (var itemOrderId in itemOrderIds) {
+
+                var group = orderDetails
+                    .Where(od => od.Item.Id == itemOrderId).ToList();
+                  
+                var quantity = group.Sum(od => od.Quantity);
+
+                var itemName = _context.Items.SingleOrDefault(i => i.Id == itemOrderId).Name;
+                result.Add(new DashBoardDoughnutDataResponse
+                {
+                    Quantity = quantity,
+                    ItemName = itemName
+                });
+
+            }
+
+
+            Console.WriteLine("123");
+            return Ok(result);
 
         }
 

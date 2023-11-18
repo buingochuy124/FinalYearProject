@@ -32,15 +32,26 @@ namespace Smarest.Controller.User
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _context.Orders.Where(o => o.UserId == userId).OrderByDescending(o => o.Date).ToListAsync();
-            result.ForEach(r => r.Date.ToString("MM/dd/yyyy"));
+            result.ForEach(r => r.Date.ToString("MM/DD/YYYY"));
             return result ;
         }
+        [HttpGet("UserOrders/{userId}")]
+        public async Task<ActionResult<List<Order>>> Orders(string userId)
+        {
+            var result = await _context.Orders.Where(o => o.UserId == userId).OrderByDescending(o => o.Date).ToListAsync();
+            result.ForEach(r => r.Date.ToString("MM/DD/YYYY"));
+            return result;
+        }
+
+        
 
         [HttpGet("AdminGetOrders")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Utils.Role.Admin)]
         public async Task<ActionResult<List<Order>>> AdminGetOrders()
         {
-            var result = await _context.Orders.Include(r => r.User).OrderByDescending(o => o.Date).ToListAsync();
+            var result = await _context.Orders.Include(r => r.User)
+            
+                .OrderByDescending(o => o.Date).ToListAsync();
             result.ForEach(r => r.UserName = r.User.UserName);
             return result ;
         }
